@@ -1,0 +1,18 @@
+{
+    "name": "karol/zielinski",
+    "autoload": {
+        "psr-4": {
+            "Karol\\Zielinski\\": "src/",
+            "Router\\": "routes/",
+            "src\\": "src/",
+            "Models\\": "models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Karol ZIELINSKI",
+            "email": "karol.zielinski@laposte.net"
+        }
+    ],
+    "require": {}
+}
