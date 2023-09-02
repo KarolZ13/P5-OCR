@@ -11,6 +11,8 @@ class PostController extends MainController {
     //Affiche les posts dans la vue Admin des posts
     public function getAdminPosts()
     {
+        $this->isAdmin();
+
         $posts = (new Post($this->getDB()))->getPosts();
 
         return $this->view('admin.posts-admin', compact('posts'));
@@ -40,6 +42,8 @@ class PostController extends MainController {
     //Affiche les détails d'un post dans la vue Admin selon son id pour modification
     public function editPost(int $id)
     {
+        $this->isAdmin();
+
         $post = (new Post($this->getDB()))->getPost($id);
         $post = $post->getPost($id);
         
@@ -49,6 +53,9 @@ class PostController extends MainController {
     //Met à jour les informations d'un post sélectionné dans la vue Admin
     public function updatePost(int $id)
     {
+
+        $this->isAdmin();
+
         $postModel = (new Post($this->getDB()))->getPost($id);
 
         $result = $postModel->updatePost($id, $_POST);
@@ -64,6 +71,9 @@ class PostController extends MainController {
     //Supprime les informations d'un post sélectionné dans la vue Admin
     public function deletePost(int $id)
     {
+
+        $this->isAdmin();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post = new Post($this->getDB());
 
@@ -80,14 +90,23 @@ class PostController extends MainController {
     }    
 
     //Montre les informations des commentaires selon un post dans la vue Admin/Comments
-    public function showCommentsByPost(int $postId)
+    public function showCommentsByPost()
     {
-        $post = new Post($this->getDB());
-        $posts = $post->getPosts();
 
+        $this->isAdmin();
+
+        $postModel = new Post($this->getDB());
+        $posts = $postModel->getPosts(); // Récupérez tous les posts
+    
         $commentModel = new Comment($this->getDB());
-        $comments = $commentModel->findCommentsByPostId($postId);
-        
-        return $this->view('admin.comments-admin', compact('posts', 'comments'));
+        $commentsByPost = [];
+    
+        foreach ($posts as $post) {
+            // Pour chaque post, récupérez les commentaires associés
+            $comments = $commentModel->findCommentsByPostId($post->id);
+            $commentsByPost[$post->id] = $comments; // Stockez les commentaires dans un tableau associatif avec l'ID du post comme clé
+        }
+    
+        return $this->view('admin.comments-admin', compact('posts', 'commentsByPost'));
     }
 }

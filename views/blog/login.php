@@ -22,6 +22,9 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="page-heading">
+                            <?php if (isset($_GET['success'])): ?>
+                                <div class="alert alert-success">Vous êtes inscrit! Vous pouvez maintenant vous connecter</div>
+                            <?php endif ?>
                             <h1>Connexion</h1>
                             <span class="subheading">Connectez-vous en remplissant le formulaire.</span>
                         </div>
@@ -37,18 +40,17 @@
                         <div class="my-5">
                             <form id="contactForm" action="/P5-OCR/login" method="POST">
                                 <div class="form-floating">
-                                    <input class="form-control" id="email" type="email" placeholder="Entrer votre adresse mail..." data-sb-validations="required,email" />
+                                    <input class="form-control" id="email" type="email" name="email" placeholder="Entrer votre adresse mail..." data-sb-validations="required,email" />
                                     <label for="email">Adresse mail</label>
                                     <div class="invalid-feedback" data-sb-feedback="email:required">Votre adresse mail est requis.</div>
                                     <div class="invalid-feedback" data-sb-feedback="email:email">Votre adresse mail n'est pas valide.</div>
                                 </div>
                                 <div class="form-floating">
-                                    <input class="form-control" id="password" type="password" placeholder="Entrer votre mot de passe..." data-sb-validations="required" />
+                                    <input class="form-control" id="password" type="password" name="password" placeholder="Entrer votre mot de passe..." data-sb-validations="required" />
                                     <label for="password">Mot de passe</label>
                                     <div class="invalid-feedback" data-sb-feedback="password:required">Votre mot de passe est requis.</div>
                                 </div>
                                 <br />
-                                <div class="d-none" id="submitSuccessMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                 <button class="btn btn-primary" id="submitButton" type="submit">Se connecter</button>
                             </form>
                             <p>Mot de passe oublié ? <a href="LoginView.php">Cliquez ici</a> pour réinitialiser votre mot de passe</p>

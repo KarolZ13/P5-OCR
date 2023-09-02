@@ -17,8 +17,18 @@ class User {
 
     public function getByEmail(string $email)
     {
-        $stmt = $this->db->getPDO()->query('SELECT * FROM {$this->table} WHERE email = ?', [$email], true);
+        $stmt = $this->db->getPDO()->prepare('SELECT * FROM ' . $this->table . ' WHERE email = ?');
+        $stmt->execute([$email]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this), [$this->db]);
-        return $stmt->fetchAll();
+        return $stmt->fetch();
+    }
+
+        public function addUser(string $lastname, string $firstname, string $email, string $password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (lastname, firstname, email, password) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$lastname, $firstname, $email, $hashedPassword]);
+        // Vous pouvez également gérer les erreurs ici si nécessaire
+        return $stmt->rowCount(); // Renvoie le nombre de lignes affectées (1 si l'insertion réussit)
     }
 }

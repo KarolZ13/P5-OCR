@@ -19,7 +19,10 @@ $router->get('/posts', 'src\controllers\PostController@posts');
 $router->get('/post/:id', 'src\controllers\PostController@show');
 
 $router->get('/login', 'src\controllers\UserController@login');
+$router->post('/login', 'src\controllers\UserController@loginPost');
 $router->get('/signin', 'src\controllers\UserController@signIn');
+$router->post('/signin', 'src\controllers\UserController@signInPost');
+$router->get('/logout', 'src\controllers\UserController@logout');
 
 $router->get('/admin/posts', 'src\controllers\PostController@getAdminPosts');
 $router->post('/admin/posts/delete/:id', 'src\controllers\PostController@deletePost');

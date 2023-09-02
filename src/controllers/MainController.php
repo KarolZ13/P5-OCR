@@ -10,6 +10,10 @@ class MainController {
 
     public function __construct(DBConnection $db)
     {
+        if (session_start() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $this->db = $db;
     }
 
@@ -33,5 +37,14 @@ class MainController {
     public function homepage()
     {
         return $this->view('blog.home-page');
+    }
+
+    protected function isAdmin()
+    {
+        if (isset($_SESSION['auth']) && $_SESSION['auth'] === 1 ) {
+            return true;
+        } else {
+            return header('Location: /p5-ocr/login');
+        }
     }
 }

@@ -23,7 +23,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
                             <h1>Administration des commentaires</h1>
-                            <span class="subheading">Liste de tous les commentaire.</span>
+                            <span class="subheading">Liste de tous les commentaires.</span>
                         </div>
                     </div>
                 </div>
@@ -34,25 +34,27 @@
             <div class="container px-4 px-lg-5">
                 <div class="card-deck">
                     <?php foreach ($params['posts'] as $post): ?>
-                        <h1>Commentaires sur l'article : <?= $post->title ?></h1>
+                        <h1>Commentaires sur l'article : <?= $post->title ?><br></h1>
+                        <p>Court contenu de l'article : <?= $post->chapo ?><br>
+                        <p>Autheur : <?= $post->author_lastname . ' ' . $post->author_firstname ?></h2>
                         <table class="table">
                             <thead>
                                 <tr>
-                                <th scope="col"><?= $post->id ?></th>
-                                <th scope="col"><?= $post->title ?></th>
-                                <th scope="col"><?= $post->chapo ?></th>
-                                <th scope="col"><?= $post->lastname . ' ' . $post->firstname ?></th>
+                                <th scope="col">Autheur</th>
+                                <th scope="col">Contenu</th>
+                                <th scope="col">Date du commentaire</th>
+                                <th scope="col">Validation ou suppression</th>
                                 </tr>
-                            </thead>
-                            <?php foreach ($params['comments'] as $comment): ?>     
+                            </thead>  
                             <tbody>
-                                <tr>
-                                <th scope="row"><?= $comment->id ?></th>
-                                <td><?= $comment->comment_author_firstname . ' ' . $comment->comment_author_lastname ?></td>
-                                <td><?= $comment->comment ?></td>
-                                <td><?= $comment->is_valid ?></td>
-                                </tr>
-                            <?php endforeach; ?>
+                                <?php foreach ($params['commentsByPost'][$post->id] as $comment): ?>
+                                    <tr>
+                                        <th scope="row"><?= $comment->comment_author_firstname . ' ' . $comment->comment_author_lastname ?></th>
+                                        <td><?= $comment->comment ?></td>
+                                        <td><?= $comment->formatted_created_at ?></td>
+                                        <td><?= $comment->is_valid ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     <?php endforeach ?>

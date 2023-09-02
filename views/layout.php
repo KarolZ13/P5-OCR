@@ -29,6 +29,9 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/posts">Articles</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/signin">Inscription</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/login">Connexion</a></li>
+                    <?php if (isset($_SESSION['auth'])): ?>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/logout">Se déconnecter</a></li>
+                    <?php endif ?>
                 </ul>
             </div>
         </div>

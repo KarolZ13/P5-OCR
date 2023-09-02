@@ -18,7 +18,19 @@ class Post extends DBConnection {
     // Récupère tous les posts en BDD
     public function getPosts(): array
     {
-        return $this->query("SELECT *, DATE_FORMAT(created_at, '%d/%m/%Y') AS formatted_date FROM {$this->table} ORDER BY created_at DESC", null);
+        return $this->query("
+            SELECT 
+                posts.*,
+                users.firstname AS author_firstname,
+                users.lastname AS author_lastname,
+                DATE_FORMAT(posts.created_at, '%d/%m/%Y') AS formatted_date
+            FROM 
+                {$this->table} AS posts
+            LEFT JOIN
+                users ON posts.id_user = users.id
+            ORDER BY
+                posts.created_at DESC
+        ", null);
     }
 
     public function getPost(int $id)

@@ -22,6 +22,9 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
+                            <?php if (isset($_GET['success'])): ?>
+                                <div class="alert alert-success">Vous êtes connecté!</div>
+                            <?php endif ?>
                             <h1>Administration des articles</h1>
                             <span class="subheading">Liste de tous les articles.</span>
                         </div>
