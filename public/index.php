@@ -25,5 +25,6 @@ $router->get('/admin/posts', 'src\controllers\PostController@getAdminPosts');
 $router->post('/admin/posts/delete/:id', 'src\controllers\PostController@deletePost');
 $router->get('/admin/posts/edit/:id', 'src\controllers\PostController@editPost');
 $router->post('/admin/posts/edit/:id', 'src\controllers\PostController@updatePost');
+$router->get('/admin/comments', 'src\controllers\PostController@showCommentsByPost');
 
 $router->run();

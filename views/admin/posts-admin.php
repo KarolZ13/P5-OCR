@@ -51,7 +51,7 @@
                                     <input type="hidden" name="id" value="<?= $post->id ?>">
                                     <button type="submit" class="btn btn-warning">Modifier</button>
                                 </form>
-                                <form action="/p5-ocr/admin/posts/delete/<?= $post->id ?>" method="get" class="d-inline">
+                                <form action="/p5-ocr/admin/posts/delete/<?= $post->id ?>" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="<?= $post->id ?>">
                                     <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </form>

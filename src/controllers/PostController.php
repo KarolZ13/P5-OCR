@@ -7,6 +7,8 @@ use Models\Comment;
 
 class PostController extends MainController {
 
+
+    //Affiche les posts dans la vue Admin des posts
     public function getAdminPosts()
     {
         $posts = (new Post($this->getDB()))->getPosts();
@@ -14,6 +16,7 @@ class PostController extends MainController {
         return $this->view('admin.posts-admin', compact('posts'));
     }
 
+    //Affiche les posts dans la vue principale des posts
     public function posts()
     {
         $post = new Post($this->getDB());
@@ -22,6 +25,7 @@ class PostController extends MainController {
         return $this->view('blog.posts', compact('posts'));
     }
 
+    //Affiche les détails d'un post selon son id
     public function show(int $id)
     {
         $post = new Post($this->getDB());
@@ -33,6 +37,7 @@ class PostController extends MainController {
         return $this->view('blog.details-post', compact('post', 'comments'));
     }
 
+    //Affiche les détails d'un post dans la vue Admin selon son id pour modification
     public function editPost(int $id)
     {
         $post = (new Post($this->getDB()))->getPost($id);
@@ -41,6 +46,7 @@ class PostController extends MainController {
         return $this->view('admin.post-edit', compact('post'));
     }
 
+    //Met à jour les informations d'un post sélectionné dans la vue Admin
     public function updatePost(int $id)
     {
         $postModel = (new Post($this->getDB()))->getPost($id);
@@ -55,6 +61,7 @@ class PostController extends MainController {
         }
     }    
 
+    //Supprime les informations d'un post sélectionné dans la vue Admin
     public function deletePost(int $id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -71,4 +78,16 @@ class PostController extends MainController {
             }
         }
     }    
+
+    //Montre les informations des commentaires selon un post dans la vue Admin/Comments
+    public function showCommentsByPost(int $postId)
+    {
+        $post = new Post($this->getDB());
+        $posts = $post->getPosts();
+
+        $commentModel = new Comment($this->getDB());
+        $comments = $commentModel->findCommentsByPostId($postId);
+        
+        return $this->view('admin.comments-admin', compact('posts', 'comments'));
+    }
 }

@@ -15,6 +15,7 @@ class Comment extends DBConnection {
         $this->db = $db;
     }
 
+    //Récupèrer les commentaires en BDD selon un post
     public function findCommentsByPostId(int $postId)
     {
         $stmt = $this->db->getPDO()->prepare("
@@ -37,9 +38,9 @@ class Comment extends DBConnection {
         return $stmt->fetchAll();
     }
 
+    // Supprimez les commentaires associés à un seul article.
     public function deleteCommentsForPost(int $postId)
     {
-        // Supprimez les commentaires associés à l'article.
         return $this->query("DELETE FROM comments WHERE id_post = ?", $postId);
     }
 }

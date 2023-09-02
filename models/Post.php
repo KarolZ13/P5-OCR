@@ -15,6 +15,7 @@ class Post extends DBConnection {
         $this->db = $db;
     }
 
+    // Récupère tous les posts en BDD
     public function getPosts(): array
     {
         return $this->query("SELECT *, DATE_FORMAT(created_at, '%d/%m/%Y') AS formatted_date FROM {$this->table} ORDER BY created_at DESC", null);
@@ -38,26 +39,25 @@ class Post extends DBConnection {
         ", $id, true);
     }
 
+    // Supression d'un post en BDD avec l'id
     public function deletePost(int $id): bool
     {
         return $this->query("DELETE FROM posts WHERE id = ?", $id);
     }
 
+
+    // Mise à jour d'un post en BDD selon son id
     public function updatePost(int $id, array $data)
     {
-        // Créez la requête SQL pour mettre à jour les informations de l'article
         $sql = "UPDATE posts SET title = :title, chapo = :chapo, content = :content WHERE id = :id";
     
-        // Préparez la requête
         $stmt = $this->db->getPDO()->prepare($sql);
     
-        // Associez les valeurs aux paramètres de la requête
         $stmt->bindValue(':title', $data['title'], PDO::PARAM_STR);
         $stmt->bindValue(':chapo', $data['chapo'], PDO::PARAM_STR);
         $stmt->bindValue(':content', $data['content'], PDO::PARAM_STR);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     
-        // Exécutez la requête
         return $stmt->execute();
     }
 }
