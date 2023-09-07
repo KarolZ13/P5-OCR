@@ -15,15 +15,21 @@ class UserController extends MainController {
     {
         $email = $_POST['email'];
         $user = (new User($this->getDB()))->getByEmail($email);
-
+    
         if (password_verify($_POST['password'], $user->password)) {
-            
             $_SESSION['auth'] = $user->is_admin;
-            return header('Location: /p5-ocr/admin/posts?success=true');
+    
+            if ($user->is_admin) {
+                // Rediriger l'administrateur vers la page d'accueil de l'administrateur
+                return header('Location: /P5-OCR/admin/posts?success=true');
+            } else {
+                // Rediriger les utilisateurs non administrateurs vers une autre page
+                return header('Location: /p5-ocr?success=true');
+            }
         } else {
-            return header ('Location: /p5-ocr/login');
+            return header('Location: /p5-ocr/login?error=true');
         }
-    }    
+    }
 
     public function logout()
     {
@@ -60,5 +66,14 @@ class UserController extends MainController {
     public function signIn()
     {
     return $this->view('blog.signin');
+    }
+
+    public function userData() 
+    {
+        $email = $_POST['email'];
+        $user = (new User($this->getDB()))->getUserData($email);
+
+        return $this->view('layout', compact('users'));
+
     }
 }

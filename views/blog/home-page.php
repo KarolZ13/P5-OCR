@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
         <title>Karol Zielinski - Développeur d'application PHP/Symfony</title>
-
     </head>
     <body style="background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 80%, rgba(0,0,0,1) 100%);">
 
@@ -25,6 +23,9 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
+                            <?php if (isset($_GET['success'])): ?>
+                                <div class="alert alert-success">Vous êtes connecté!</div>
+                            <?php endif ?>
                             <h1>Karol Zielinski</h1>
                             <span class="subheading">Développeur d'application PHP/Symfony</span>
                             <div class="box">
@@ -106,7 +107,14 @@
         <footer class="border-top" style="background:url(/p5-ocr/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="col-md-10 col-lg-8 col-xl-7 text-center">
+                        <?php if (isset($_SESSION['auth']) && $_SESSION['auth']): ?>
+                            <div class="margin" style="margin-bottom: 5%;">
+                                <a href="/P5-OCR/admin/posts">
+                                    <button type="submit" class="btn btn-primary">Administration du site</button>
+                                </a>
+                            </div>
+                        <?php endif; ?>
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
                                 <a href="https://www.linkedin.com/in/karol-zielinski-78a044149/" target="_blank">

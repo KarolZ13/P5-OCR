@@ -33,6 +33,7 @@ class Post extends DBConnection {
         ", null);
     }
 
+    // Récupère un post en BDD selon l'id
     public function getPost(int $id)
     {
         return $this->query("

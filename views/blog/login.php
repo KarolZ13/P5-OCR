@@ -25,6 +25,9 @@
                             <?php if (isset($_GET['success'])): ?>
                                 <div class="alert alert-success">Vous êtes inscrit! Vous pouvez maintenant vous connecter</div>
                             <?php endif ?>
+                            <?php if (isset($_GET['error'])): ?>
+                                <div class="alert alert-danger">Connexion échouée!</div>
+                            <?php endif ?>
                             <h1>Connexion</h1>
                             <span class="subheading">Connectez-vous en remplissant le formulaire.</span>
                         </div>
@@ -99,11 +102,7 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="../public/js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *--
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="/p5-ocr/public/js/scripts.js"></script>
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>

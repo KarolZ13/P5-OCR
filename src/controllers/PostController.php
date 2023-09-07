@@ -7,17 +7,6 @@ use Models\Comment;
 
 class PostController extends MainController {
 
-
-    //Affiche les posts dans la vue Admin des posts
-    public function getAdminPosts()
-    {
-        $this->isAdmin();
-
-        $posts = (new Post($this->getDB()))->getPosts();
-
-        return $this->view('admin.posts-admin', compact('posts'));
-    }
-
     //Affiche les posts dans la vue principale des posts
     public function posts()
     {
@@ -39,16 +28,7 @@ class PostController extends MainController {
         return $this->view('blog.details-post', compact('post', 'comments'));
     }
 
-    //Affiche les détails d'un post dans la vue Admin selon son id pour modification
-    public function editPost(int $id)
-    {
-        $this->isAdmin();
 
-        $post = (new Post($this->getDB()))->getPost($id);
-        $post = $post->getPost($id);
-        
-        return $this->view('admin.post-edit', compact('post'));
-    }
 
     //Met à jour les informations d'un post sélectionné dans la vue Admin
     public function updatePost(int $id)
@@ -107,6 +87,27 @@ class PostController extends MainController {
             $commentsByPost[$post->id] = $comments; // Stockez les commentaires dans un tableau associatif avec l'ID du post comme clé
         }
     
-        return $this->view('admin.comments-admin', compact('posts', 'commentsByPost'));
+        return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));
     }
+
+    //Affiche les posts dans la vue Admin des posts
+    public function getAdminPosts()
+    {
+        $this->isAdmin();
+
+        $posts = (new Post($this->getDB()))->getPosts();
+
+        return $this->adminView('admin.homepage-admin', compact('posts'));
+    }
+
+        //Affiche les détails d'un post dans la vue Admin selon son id pour modification
+        public function editPost(int $id)
+        {
+            $this->isAdmin();
+    
+            $post = (new Post($this->getDB()))->getPost($id);
+            $post = $post->getPost($id);
+            
+            return $this->adminView('admin.post-edit', compact('post'));
+        }
 }

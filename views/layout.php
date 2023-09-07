@@ -14,6 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="<?= SCRIPTS . 'css' . DIRECTORY_SEPARATOR . 'styles.css' ?>" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" />
     </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
@@ -28,9 +29,21 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/posts">Articles</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/signin">Inscription</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/login">Connexion</a></li>
                     <?php if (isset($_SESSION['auth'])): ?>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/logout">Se déconnecter</a></li>
+                        <img src="/p5-ocr/public/assets/img/avatar1.jpg" class="rounded-circle shadow-4" style="width: 50px; height: 50px; margin-top: 2%; margin-left: 10%" alt="Avatar" />
+                        <div class="dropdown" style="margin-top: 1%">
+                        <div class="dropdown show">
+                            <a class="btn dropdown-toggle .text-white" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
+                                
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Mon profil</a>
+                                <a class="dropdown-item" href="#">Mes commenaires</a>
+                                <a class="dropdown-item" href="/p5-ocr/logout">Se déconnecter</a>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/login">Connexion</a></li>
                     <?php endif ?>
                 </ul>
             </div>

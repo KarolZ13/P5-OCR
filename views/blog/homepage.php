@@ -25,6 +25,9 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
+                            <?php if (isset($_GET['success'])): ?>
+                                <div class="alert alert-success">Vous êtes connecté!</div>
+                            <?php endif ?>
                             <h1>Karol Zielinski</h1>
                             <span class="subheading">Développeur d'application PHP/Symfony</span>
                             <div class="box">
@@ -133,6 +136,7 @@
                                 </a>
                             </li>
                         </ul>
+                        <button type="submit" class="btn btn-warning">Modifier</button>
                         <div class="small text-center text-muted fst-italic">Copyright &copy; Karol Zielinski - 2023</div>
                     </div>
                 </div>
