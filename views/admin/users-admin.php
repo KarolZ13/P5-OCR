@@ -42,7 +42,7 @@
                             <div class="card h-100 bg-dark text-light box-glow-1 text-center">
                                 <a href="/p5-ocr/admin/user/<?= $user->id ?>">
                                 <?php if ($user->avatar !== null): ?>
-                                    <img class="card-img-top" src="<?= '/p5-ocr/public/assets/img/' . $user->avatar ?>" alt="Card image cap">
+                                    <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $user->avatar ?>" alt="Card image cap">
                                 <?php else: ?>
                                     <img src="/p5-ocr/public/assets/img/avatar-default.png" style="width: 100%; height: 100%;" alt="Avatar" />
                                 <?php endif; ?>
