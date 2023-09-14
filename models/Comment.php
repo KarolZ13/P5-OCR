@@ -43,4 +43,14 @@ class Comment extends DBConnection {
     {
         return $this->query("DELETE FROM comments WHERE id_post = ?", $postId);
     }
+
+    public function addComment(string $comment, int $isValid, int $userID, int $postID, string $createdAt)
+    {
+        $isValid = 0;
+
+        $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (comment, is_valid, id_user, id_post, created_at) VALUES (?, ?, ?, ?, ?)');
+        $stmt->execute([$comment, $isValid, $userID, $postID, $createdAt]);
+        // Vous pouvez également gérer les erreurs ici si nécessaire
+        return $stmt->rowCount(); // Renvoie le nombre de lignes affectées (1 si l'insertion réussit)
+    }
 }

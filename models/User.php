@@ -36,4 +36,25 @@ class User extends DBConnection {
     {
         return $this->query("SELECT * FROM users WHERE email = ?", $email, true);
     }
+
+    public function getUsers(): array
+    {
+        return $this->query("SELECT * FROM users", null);
+    }
+
+    public function getUsersWithCommentCounts(): array
+    {
+        return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(c.id) as comment_count
+                FROM users u
+                LEFT JOIN comments c ON u.id = c.id_user
+                GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
+    }
+
+    public function getUsersWithPostCounts(): array
+    {
+        return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(p.id) as post_count
+        FROM users u
+        LEFT JOIN posts p ON u.id = p.id_user
+        GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
+    }
 }

@@ -54,25 +54,26 @@
                     <div class="row gx-4 gx-lg-5 justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-7">
                             <div class="my-5">
-                                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                                <form id="contactForm" action="/p5-ocr/post/<?= $params['post']->id ?>" method="POST">
+                                <?php if (isset($_SESSION['auth'])): ?>
                                     <div class="form-floating">
-                                        <textarea class="form-control" id="text" type="text" placeholder="Ajouter votre commentaire..." style="height: 12rem" data-sb-validations="required" data-sb-can-submit="no"></textarea>
-                                        <label for="comments">Ajouter un commentaire...</label>
+                                        <textarea class="form-control" id="comment" name="comment" type="text" placeholder="Ajouter votre commentaire..." style="height: 12rem" data-sb-validations="required"></textarea>
+                                        <label for="comment">Ajouter un commentaire...</label>
                                     </div>
                                     <br />
                                     <div class="d-none" id="submitSuccessMessage">
                                         <div class="text-center mb-3">
                                             <div class="fw-bolder">Votre commentaire est en attente d'approbation par un administrateur.</div>
-                                            To activate this form, sign up at
-                                            <br />
-                                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                                         </div>
                                     </div>
                                     <div class="d-none" id="submitErrorMessage">
                                         <div class="text-center text-danger mb-3">Error sending message!</div>
                                     </div>
-                                    <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">Envoyer</button>
+                                    <button class="btn btn-primary" id="submitButton" type="submit">Envoyer</button>
                                 </form>
+                                <?php else: ?>
+                                    <strong><i>Vous devez être connecté pour ajouter un commentaire!</i></strong>
+                                <?php endif ?>
                                 <div class="mt-5">
                                     <h3>Commentaires</h3>
                                     <?php if (empty($params['comments'])): ?>
@@ -94,7 +95,14 @@
         <footer class="border-top" style="background:url(../public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="col-md-10 col-lg-8 col-xl-7 text-center">
+                    <?php if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin']): ?>
+                            <div class="margin" style="margin-bottom: 5%;">
+                                <a href="/P5-OCR/admin/posts">
+                                    <button type="submit" class="btn btn-primary">Administration du site</button>
+                                </a>
+                            </div>
+                        <?php endif; ?>
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
                                 <a href="#!">

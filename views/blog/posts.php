@@ -56,7 +56,14 @@
         <footer class="border-top" style="background:url(/p5-ocr/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="col-md-10 col-lg-8 col-xl-7 text-center">
+                    <?php if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin']): ?>
+                            <div class="margin" style="margin-bottom: 5%;">
+                                <a href="/P5-OCR/admin">
+                                    <button type="submit" class="btn btn-primary">Administration du site</button>
+                                </a>
+                            </div>
+                        <?php endif; ?>
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
                                 <a href="#!">

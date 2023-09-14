@@ -53,9 +53,14 @@
                         <div class="form-group" style="margin-bottom: 2rem">
                             <label for="content">Contenu de l'article :</label>
                             <textarea name="content" id="content" rows ="8" class="form-control"><?= $params['post']->content ?></textarea>
+                        </div>                        <div class="form-group" style="margin-bottom: 2rem">
+                            <label>Article publié?
+                                <input type="checkbox" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                     </form>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                 </div>
             </div>
         </div>

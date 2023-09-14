@@ -17,11 +17,20 @@ class UserController extends MainController {
         $user = (new User($this->getDB()))->getByEmail($email);
     
         if (password_verify($_POST['password'], $user->password)) {
-            $_SESSION['auth'] = $user->is_admin;
+            // Créez un tableau associatif pour stocker les informations de l'utilisateur
+            $userData = [
+                'is_admin' => $user->is_admin,
+                'id' => $user->id, // Ajoutez d'autres informations que vous souhaitez stocker
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                // Ajoutez d'autres informations de l'utilisateur ici
+            ];
     
-            if ($user->is_admin) {
+            $_SESSION['auth'] = $userData;
+    
+            if ($_SESSION['auth']['is_admin']) {
                 // Rediriger l'administrateur vers la page d'accueil de l'administrateur
-                return header('Location: /P5-OCR/admin/posts?success=true');
+                return header('Location: /P5-OCR/admin?success=true');
             } else {
                 // Rediriger les utilisateurs non administrateurs vers une autre page
                 return header('Location: /p5-ocr?success=true');
@@ -30,6 +39,7 @@ class UserController extends MainController {
             return header('Location: /p5-ocr/login?error=true');
         }
     }
+    
 
     public function logout()
     {
@@ -68,12 +78,11 @@ class UserController extends MainController {
     return $this->view('blog.signin');
     }
 
-    public function userData() 
+    public function getUsers()
     {
-        $email = $_POST['email'];
-        $user = (new User($this->getDB()))->getUserData($email);
+        $user = new User($this->getDB());
+        $users = $user->getUsers();
 
-        return $this->view('layout', compact('users'));
-
+        return $this->adminView('admin.users-admin', compact('users'));
     }
 }

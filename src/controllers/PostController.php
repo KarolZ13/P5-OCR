@@ -97,7 +97,7 @@ class PostController extends MainController {
 
         $posts = (new Post($this->getDB()))->getPosts();
 
-        return $this->adminView('admin.homepage-admin', compact('posts'));
+        return $this->adminView('admin.posts-admin', compact('posts'));
     }
 
         //Affiche les détails d'un post dans la vue Admin selon son id pour modification

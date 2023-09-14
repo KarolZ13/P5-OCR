@@ -3,6 +3,7 @@
 namespace src\controllers;
 
 use Models\DBConnection;
+use Models\User;
 
 class MainController {
 
@@ -51,10 +52,20 @@ class MainController {
 
     protected function isAdmin()
     {
-        if (isset($_SESSION['auth']) && $_SESSION['auth'] === 1 ) {
+        if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin'] === 1 ) {
             return true;
         } else {
             return header('Location: /p5-ocr/login');
         }
+    }
+
+    public function homepageAdmin()
+    {
+        $user = new User($this->getDB());
+        $users = $user->getUsers();
+        $usersWithCommentCounts = $user->getUsersWithCommentCounts();
+        $usersWithPostCounts = $user->getUsersWithPostCounts();
+
+        return $this->adminView('admin.homepage-admin', compact('users', 'usersWithCommentCounts', 'usersWithPostCounts'));
     }
 }

@@ -28,13 +28,12 @@
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/posts">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/signin">Inscription</a></li>
                     <?php if (isset($_SESSION['auth'])): ?>
                         <img src="/p5-ocr/public/assets/img/avatar1.jpg" class="rounded-circle shadow-4" style="width: 50px; height: 50px; margin-top: 2%; margin-left: 10%" alt="Avatar" />
                         <div class="dropdown" style="margin-top: 1%">
                         <div class="dropdown show">
                             <a class="btn dropdown-toggle .text-white" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
-                                
+                                <?= $_SESSION['auth']['firstname'] .' '. $_SESSION['auth']['lastname']  ?>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#">Mon profil</a>
@@ -43,6 +42,7 @@
                             </div>
                         </div>
                     <?php else: ?>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/signin">Inscription</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/p5-ocr/login">Connexion</a></li>
                     <?php endif ?>
                 </ul>
