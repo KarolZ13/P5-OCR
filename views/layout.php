@@ -6,7 +6,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Karol Zielinski - Développeur d'application PHP/Symfony</title>
-        <link rel="icon" type="image/x-icon" href="/public/assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/p5-ocr/public/assets/img/kz-logo.JPG" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -36,8 +36,7 @@
                                 <?= $_SESSION['auth']['firstname'] .' '. $_SESSION['auth']['lastname']  ?>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Mon profil</a>
-                                <a class="dropdown-item" href="#">Mes commenaires</a>
+                                <a class="dropdown-item" href="/p5-ocr/profil/<?= $_SESSION['auth']['id'] ?>">Mon profil</a>
                                 <a class="dropdown-item" href="/p5-ocr/logout">Se déconnecter</a>
                             </div>
                         </div>

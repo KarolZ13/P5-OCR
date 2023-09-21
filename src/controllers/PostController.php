@@ -7,7 +7,7 @@ use Models\Comment;
 
 class PostController extends MainController {
 
-    //Affiche les posts dans la vue principale des posts
+    // Affiche les posts dans la vue utilisateur des articles
     public function posts()
     {
         $post = new Post($this->getDB());
@@ -16,7 +16,7 @@ class PostController extends MainController {
         return $this->view('blog.posts', compact('posts'));
     }
 
-    //Affiche les détails d'un post selon son id
+    // Affiche les détails d'un article et ses commentaires selon son id
     public function show(int $id)
     {
         $post = new Post($this->getDB());
@@ -30,7 +30,7 @@ class PostController extends MainController {
 
 
 
-    //Met à jour les informations d'un post sélectionné dans la vue Admin
+    // Met à jour les informations d'un article sélectionné dans la vue Admin
     public function updatePost(int $id)
     {
 
@@ -41,14 +41,14 @@ class PostController extends MainController {
         $result = $postModel->updatePost($id, $_POST);
     
         if ($result) {
-            header('Location: /p5-ocr/admin/posts');
+           return header("Location: /p5-ocr/admin/posts/edit/{$id}?success=true");
             exit();
         } else {
             echo "Erreur lors de la modification";
         }
     }    
 
-    //Supprime les informations d'un post sélectionné dans la vue Admin
+    // Supprime les informations d'un article sélectionné dans la vue administrateur des articles
     public function deletePost(int $id)
     {
 
@@ -67,30 +67,50 @@ class PostController extends MainController {
                 exit();
             }
         }
-    }    
-
-    //Montre les informations des commentaires selon un post dans la vue Admin/Comments
-    public function showCommentsByPost()
+    }
+    
+    public function togglePost(int $id)
     {
 
         $this->isAdmin();
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $post = new Post($this->getDB());
+
+            $currentStatus = $post->getPostStatus($id);
+
+            $newStatus = ($currentStatus == 0) ? 1 : 0;
+
+            $result = $post->togglePostStatus($id, $newStatus);
+    
+            if ($result) {
+                header('Location: /p5-ocr/admin/posts?success=true');
+                exit();
+            }
+        }
+    }
+
+
+    // Montre les informations des commentaires selon un article dans la vue administateur des commentaires
+    public function showCommentsByPost()
+    {
+        $this->isAdmin();
+    
         $postModel = new Post($this->getDB());
-        $posts = $postModel->getPosts(); // Récupérez tous les posts
+        $posts = $postModel->getPosts(); 
     
         $commentModel = new Comment($this->getDB());
         $commentsByPost = [];
     
         foreach ($posts as $post) {
-            // Pour chaque post, récupérez les commentaires associés
             $comments = $commentModel->findCommentsByPostId($post->id);
-            $commentsByPost[$post->id] = $comments; // Stockez les commentaires dans un tableau associatif avec l'ID du post comme clé
+            $commentsByPost[$post->id] = $comments;
         }
     
-        return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));
+        return $this->adminView('admin.comments-admin', ['posts' => $posts, 'commentsByPost' => $commentsByPost]);
     }
 
-    //Affiche les posts dans la vue Admin des posts
+    // Affiche les articls dans la vue administrateur des articles
     public function getAdminPosts()
     {
         $this->isAdmin();
@@ -100,14 +120,14 @@ class PostController extends MainController {
         return $this->adminView('admin.posts-admin', compact('posts'));
     }
 
-        //Affiche les détails d'un post dans la vue Admin selon son id pour modification
-        public function editPost(int $id)
-        {
-            $this->isAdmin();
-    
-            $post = (new Post($this->getDB()))->getPost($id);
-            $post = $post->getPost($id);
-            
-            return $this->adminView('admin.post-edit', compact('post'));
-        }
+    // Affiche les détails d'un article dans la vue administrateur selon son id pour modification
+    public function editPost(int $id)
+    {
+        $this->isAdmin();
+
+        $post = (new Post($this->getDB()))->getPost($id);
+        $post = $post->getPost($id);
+        
+        return $this->adminView('admin.post-edit', compact('post'));
+    }
 }

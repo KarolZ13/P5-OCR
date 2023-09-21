@@ -2,6 +2,21 @@
 <html lang="en">
     <head>
         <title>titre</title>
+        <style>
+            header.masthead .post-heading .meta {
+                display: flex;
+                justify-content: end;
+            }
+
+            .btn-primary {
+                --bs-btn-bg: #5155599e;
+                --bs-btn-border-color: #515559;
+                --bs-btn-hover-bg: #515559;
+                --bs-btn-hover-border-color: #ffffff;
+                --bs-btn-active-bg: none;
+                --bs-btn-active-border-color: #ffffff;
+            }
+        </style>
     </head>
     <body style="background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 80%, rgba(0,0,0,1) 100%);">
         <!-- Page Header-->
@@ -20,7 +35,7 @@
         </div>
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="col-md-10 col-lg-8 col-xl-10">
                         <div class="post-heading">
                             <h1><?= $params['post']->title ?></h1>
                             <h2 class="subheading"><?= $params['post']->chapo ?></h2>
@@ -98,7 +113,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7 text-center">
                     <?php if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin']): ?>
                             <div class="margin" style="margin-bottom: 5%;">
-                                <a href="/P5-OCR/admin/posts">
+                                <a href="/P5-OCR/admin">
                                     <button type="submit" class="btn btn-primary">Administration du site</button>
                                 </a>
                             </div>

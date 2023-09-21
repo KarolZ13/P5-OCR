@@ -15,6 +15,7 @@ class User extends DBConnection {
         $this->db = $db;
     }
 
+    // Récupère les informations d'un utilisateur selon son email en BDD
     public function getByEmail(string $email)
     {
         $stmt = $this->db->getPDO()->prepare('SELECT * FROM ' . $this->table . ' WHERE email = ?');
@@ -23,25 +24,27 @@ class User extends DBConnection {
         return $stmt->fetch();
     }
 
+    public function getUser(int $id)
+    {
+        return $this->query("SELECT * FROM {$this->table} WHERE id = ?", $id, true);
+    }
+
+    // Ajoute un utilisateur en BDD
         public function addUser(string $lastname, string $firstname, string $email, string $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
         $stmt->execute([$lastname, $firstname, $email, $hashedPassword]);
-        // Vous pouvez également gérer les erreurs ici si nécessaire
-        return $stmt->rowCount(); // Renvoie le nombre de lignes affectées (1 si l'insertion réussit)
+        return $stmt->rowCount();
     }
 
-    public function getUserData(string $email)
-    {
-        return $this->query("SELECT * FROM users WHERE email = ?", $email, true);
-    }
-
+    // Récupère toutes les informations des utilisateurs en BDD
     public function getUsers(): array
     {
         return $this->query("SELECT * FROM users", null);
     }
 
+    // Récupère le nombre de commentaire créé par un utilisateur
     public function getUsersWithCommentCounts(): array
     {
         return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(c.id) as comment_count
@@ -50,6 +53,7 @@ class User extends DBConnection {
                 GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
     }
 
+    // Récupère le nombre d'article créé par un utilisateur
     public function getUsersWithPostCounts(): array
     {
         return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(p.id) as post_count

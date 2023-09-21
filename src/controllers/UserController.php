@@ -6,33 +6,31 @@ use Models\User;
 
 class UserController extends MainController {
 
+    // Affiche la vue de connexion
     public function login() 
     {
         return $this->view('blog.login');
     }
 
+    // Récupére les informations soumis par l'utilisateur lors de la connexion
     public function loginPost() 
     {
         $email = $_POST['email'];
         $user = (new User($this->getDB()))->getByEmail($email);
     
         if (password_verify($_POST['password'], $user->password)) {
-            // Créez un tableau associatif pour stocker les informations de l'utilisateur
             $userData = [
                 'is_admin' => $user->is_admin,
-                'id' => $user->id, // Ajoutez d'autres informations que vous souhaitez stocker
+                'id' => $user->id,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
-                // Ajoutez d'autres informations de l'utilisateur ici
             ];
     
             $_SESSION['auth'] = $userData;
     
             if ($_SESSION['auth']['is_admin']) {
-                // Rediriger l'administrateur vers la page d'accueil de l'administrateur
                 return header('Location: /P5-OCR/admin?success=true');
             } else {
-                // Rediriger les utilisateurs non administrateurs vers une autre page
                 return header('Location: /p5-ocr?success=true');
             }
         } else {
@@ -40,7 +38,7 @@ class UserController extends MainController {
         }
     }
     
-
+    // Déconnexion de l'utilisateur
     public function logout()
     {
         session_destroy();
@@ -48,41 +46,45 @@ class UserController extends MainController {
         return header('Location: /p5-ocr/');
     }
 
+    // Récupére les informations d'inscription pour ajouter un utilisateur
     public function signInPost()
     {
-        // Récupérer les données du formulaire
         $lastname = $_POST['lastname'];
         $firstname = $_POST['firstname'];
         $email = $_POST['email'];
         $password = $_POST['password'];
     
-        // Créer une instance du modèle User
         $userModel = new User($this->getDB());
     
-        // Appeler la méthode addUser pour ajouter l'utilisateur
         $result = $userModel->addUser($lastname, $firstname, $email, $password);
     
         if ($result === 1) {
-            // L'utilisateur a été ajouté avec succès, vous pouvez rediriger l'utilisateur vers une page de confirmation
-            // ou effectuer d'autres actions nécessaires.
-            // Par exemple, vous pouvez rediriger l'utilisateur vers une page de connexion.
             return header('Location: /p5-ocr/login?success=true');
         } else {
-            // Gérer les erreurs si l'ajout a échoué
             return header ('Location: /p5-ocr/signin');
         }
     }
 
+    // Affiche la page d'inscription'
     public function signIn()
     {
     return $this->view('blog.signin');
     }
 
+    // Récupére les informations des utilisateurs pour la mettre dans la vue administrateur des utilisateurs
     public function getUsers()
     {
         $user = new User($this->getDB());
         $users = $user->getUsers();
 
         return $this->adminView('admin.users-admin', compact('users'));
+    }
+
+    public function editUserProfil(int $id)
+    {
+        $user = (new User($this->getDB()))->getUser($id);
+        $user = $user->getUser($id);
+        
+        return $this->view('blog.profil-edit', compact('user'));
     }
 }

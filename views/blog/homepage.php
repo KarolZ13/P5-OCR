@@ -1,22 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
         <title>Karol Zielinski - Développeur d'application PHP/Symfony</title>
-        <style>
-        .btn-primary {
-            --bs-btn-bg: #5155599e;
-            --bs-btn-border-color: #515559;
-            --bs-btn-hover-bg: #515559;
-            --bs-btn-hover-border-color: #ffffff;
-            --bs-btn-active-bg: none;
-            --bs-btn-active-border-color: #ffffff;
-        }
-        </style>
+
     </head>
     <body style="background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 80%, rgba(0,0,0,1) 100%);">
 
         <!-- Page Header-->
-        <header class="masthead" style="background:url(/p5-ocr/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
+        <header class="masthead" style="background:url(/blog-php/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
             <div class="box">
                 <div></div>
                 <div></div>
@@ -105,26 +97,19 @@
                                 <!-- an error submitting the form-->
                                 <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                 <!-- Submit Button-->
-                                <button class="btn btn-primary" id="submitButton" type="submit">Envoyer</button>
+                                <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">Envoyer</button>
                             </form>
-                            <p>Vous pouvez télécharger mon CV en cliquant <a href="/p5-ocr/public/assets/img/CV-Karol-ZIELINSKI.pdf" target="_blank">ici.</a></p>
+                            <p>Vous pouvez télécharger mon CV en cliquant <a href="/blog-php/public/assets/img/CV-Karol-ZIELINSKI.pdf" target="_blank">ici.</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
         <!-- Footer-->
-        <footer class="border-top" style="background:url(/p5-ocr/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
+        <footer class="border-top" style="background:url(/blog-php/public/assets/img/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall.jpg) no-repeat center; background-size:cover;">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7 text-center">
-                        <?php if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin']): ?>
-                            <div class="margin" style="margin-bottom: 5%;">
-                                <a href="/P5-OCR/admin">
-                                    <button type="submit" class="btn btn-primary">Administration du site</button>
-                                </a>
-                            </div>
-                        <?php endif; ?>
+                    <div class="col-md-10 col-lg-8 col-xl-7">
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
                                 <a href="https://www.linkedin.com/in/karol-zielinski-78a044149/" target="_blank">
@@ -151,6 +136,7 @@
                                 </a>
                             </li>
                         </ul>
+                        <button type="submit" class="btn btn-warning">Modifier</button>
                         <div class="small text-center text-muted fst-italic">Copyright &copy; Karol Zielinski - 2023</div>
                     </div>
                 </div>

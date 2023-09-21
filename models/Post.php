@@ -59,6 +59,31 @@ class Post extends DBConnection {
     }
 
 
+
+    public function togglePostStatus(int $id, $status)
+    {
+        if ($status == 0) {
+            $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 1 WHERE id = :id");
+        } else {
+            $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 0 WHERE id = :id");
+        }
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
+
+    public function getPostStatus(int $id)
+    {
+        $stmt = $this->db->getPDO()->prepare("SELECT status FROM posts WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_COLUMN);
+    }
+
+
     // Mise à jour d'un post en BDD selon son id
     public function updatePost(int $id, array $data)
     {
