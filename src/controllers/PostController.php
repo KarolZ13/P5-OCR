@@ -63,29 +63,27 @@ class PostController extends MainController {
             $result = $post->deletePost($id);
     
             if ($result) {
-                header('Location: /p5-ocr/admin/posts');
-                exit();
+                header('Location: /p5-ocr/admin/posts?success=true');
+            } else {
+                header('Location: /p5-ocr/admin/posts?error=true');
             }
         }
     }
     
     public function togglePost(int $id)
     {
-
         $this->isAdmin();
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post = new Post($this->getDB());
-
             $currentStatus = $post->getPostStatus($id);
-
-            $newStatus = ($currentStatus == 0) ? 1 : 0;
-
+            $newStatus = $currentStatus;
             $result = $post->togglePostStatus($id, $newStatus);
-    
+
             if ($result) {
                 header('Location: /p5-ocr/admin/posts?success=true');
-                exit();
+            } else {
+                header('Location: /p5-ocr/admin/posts?error=true');
             }
         }
     }
@@ -130,4 +128,49 @@ class PostController extends MainController {
         
         return $this->adminView('admin.post-edit', compact('post'));
     }
+
+    // Récupération des données du formulaire pour la création d'un article
+    public function createPost()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $chapo = $_POST['chapo'];
+            $status = 0;
+            $idUser = $_SESSION['auth']['id'];
+            $createdAt = date("Y/m/d");
+    
+            if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+                $picture = $_FILES['picture']['name'];
+    
+                $uploadDir = '/p5-ocr/public/assets/img/';
+                $uploadPath = $uploadDir . $picture;
+    
+                move_uploaded_file($_FILES['picture']['tmp_name'], $uploadPath);
+            } else {
+                $picture = null;
+            }
+    
+            $idUser = (int)$idUser;
+    
+            $postModel = new Post($this->getDB());
+    
+            $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $createdAt);
+    
+            if ($result === 1) {
+                return header("Location: /p5-ocr/admin/posts");
+            } else {
+                return header("Location: /p5-ocr/admin/posts");
+            }
+        }
+    }
+    
+
+    public function addPostView()
+    {
+        $this->isAdmin();
+
+        return $this->Adminview('admin.post-add');
+    }
+
 }

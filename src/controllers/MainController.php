@@ -63,6 +63,8 @@ class MainController {
     // Récupération des informations pour la vue de la page d'accueil administrateur
     public function homepageAdmin()
     {
+        $this->isAdmin();
+        
         $user = new User($this->getDB());
         $users = $user->getUsers();
         $usersWithCommentCounts = $user->getUsersWithCommentCounts();

@@ -23,7 +23,7 @@ class CommentController extends MainController {
             $result = $commentModel->addComment($comment, $isValid, $userID, $postID, $createdAt);
         
             if ($result === 1) {
-                return header("Location: /p5-ocr/post/{$postID}");
+                return header("Location: /p5-ocr/post/{$postID}?success=true");
             } else {
                 return header("Location: /p5-ocr/post/{$postID}?error=true");
             }
@@ -37,15 +37,14 @@ class CommentController extends MainController {
         $this->isAdmin();
 
         $postModel = new Post($this->getDB());
-        $posts = $postModel->getPosts(); // Récupérez tous les posts
+        $posts = $postModel->getPosts();
     
         $commentModel = new Comment($this->getDB());
         $commentsByPost = [];
     
         foreach ($posts as $post) {
-            // Pour chaque post, récupérez les commentaires associés
             $comments = $commentModel->findCommentsByPostId($post->id);
-            $commentsByPost[$post->id] = $comments; // Stockez les commentaires dans un tableau associatif avec l'ID du post comme clé
+            $commentsByPost[$post->id] = $comments;
         }
     
         return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));

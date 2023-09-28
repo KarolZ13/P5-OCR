@@ -41,7 +41,7 @@ class User extends DBConnection {
     // Récupère toutes les informations des utilisateurs en BDD
     public function getUsers(): array
     {
-        return $this->query("SELECT * FROM users", null);
+        return $this->query("SELECT * FROM users ORDER BY id DESC", null);
     }
 
     // Récupère le nombre de commentaire créé par un utilisateur
@@ -60,5 +60,44 @@ class User extends DBConnection {
         FROM users u
         LEFT JOIN posts p ON u.id = p.id_user
         GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
+    }
+
+    public function toggleUserStatus(int $id, int $isEnable)
+    {
+        
+        if ($isEnable == 0) {
+            $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_enable = 1 WHERE id = :id");
+        } else {
+            $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_enable = 0 WHERE id = :id");
+        }
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getUserStatus(int $id)
+    {
+        $stmt = $this->db->getPDO()->prepare("SELECT is_enable FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_COLUMN);
+    }
+
+    public function updateUserProfil(int $id, array $data)
+    {
+        $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, avatar = :avatar WHERE id = :id";
+    
+        $stmt = $this->db->getPDO()->prepare($sql);
+    
+        $stmt->bindValue(':firstname', $data['firstname'], PDO::PARAM_STR);
+        $stmt->bindValue(':lastname', $data['lastname'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':password', $data['password'], PDO::PARAM_STR);
+        $stmt->bindValue(':avatar', $data['acatar'], PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    
+        return $stmt->execute();
     }
 }

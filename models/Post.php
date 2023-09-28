@@ -60,17 +60,17 @@ class Post extends DBConnection {
 
 
 
-    public function togglePostStatus(int $id, $status)
+    public function togglePostStatus(int $id, int $newStatus)
     {
-        if ($status == 0) {
+        
+        if ($newStatus == 0) {
             $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 1 WHERE id = :id");
         } else {
             $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 0 WHERE id = :id");
         }
 
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-        $stmt->execute();
+        return $stmt->execute();
     }
 
     public function getPostStatus(int $id)
@@ -97,5 +97,17 @@ class Post extends DBConnection {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     
         return $stmt->execute();
+    }
+
+    public function addPost(string $title, string $content, string $chapo, ?string $picture, int $status, int $userId, string $createdAt)
+    {
+        $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (title, content, chapo, picture, status, id_user, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$title, $content, $chapo, $picture, $status, $userId, $createdAt]);
+        return $stmt->rowCount();
+    }
+
+    public function disableUserPosts(int $userId)
+    {
+        return $this->query("UPDATE posts SET status = 0 WHERE id_user = ?", $userId);
     }
 }

@@ -21,6 +21,7 @@ class Comment extends DBConnection {
         $stmt = $this->db->getPDO()->prepare("
             SELECT 
             comments.comment,
+            comments.is_valid,
             DATE_FORMAT(comments.created_at, '%d/%m/%Y') AS formatted_created_at,
             comment_users.firstname AS comment_author_firstname,
             comment_users.lastname AS comment_author_lastname
@@ -50,7 +51,12 @@ class Comment extends DBConnection {
 
         $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (comment, is_valid, id_user, id_post, created_at) VALUES (?, ?, ?, ?, ?)');
         $stmt->execute([$comment, $isValid, $userID, $postID, $createdAt]);
-        // Vous pouvez également gérer les erreurs ici si nécessaire
-        return $stmt->rowCount(); // Renvoie le nombre de lignes affectées (1 si l'insertion réussit)
+        return $stmt->rowCount();
+    }
+
+    // Désactiver les commentaires d'un utilisateur
+    public function disableUserComments(int $userId)
+    {
+        return $this->query("UPDATE comments SET is_valid = 0 WHERE id_user = ?", $userId);
     }
 }

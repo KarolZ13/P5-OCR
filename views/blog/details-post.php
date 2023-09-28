@@ -58,6 +58,9 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
+                        <?php if (isset($_GET['success'])): ?>
+                        <div class="alert alert-success" style="margin-top: 1rem">Le commentaire est en attente d'approbation par l'administrateur</div>
+                        <?php endif ?>
                         <p>
                         <?= $params['post']->content ?>
                         </p>
@@ -76,11 +79,6 @@
                                         <label for="comment">Ajouter un commentaire...</label>
                                     </div>
                                     <br />
-                                    <div class="d-none" id="submitSuccessMessage">
-                                        <div class="text-center mb-3">
-                                            <div class="fw-bolder">Votre commentaire est en attente d'approbation par un administrateur.</div>
-                                        </div>
-                                    </div>
                                     <div class="d-none" id="submitErrorMessage">
                                         <div class="text-center text-danger mb-3">Error sending message!</div>
                                     </div>
@@ -95,8 +93,10 @@
                                         <p>Aucun commentaire ajouté</p>
                                     <?php else: ?>
                                         <?php foreach ($params['comments'] as $comment): ?>
-                                            <p>Auteur: <strong><?= $comment->comment_author_firstname . ' ' . $comment->comment_author_lastname ?></strong> le <?= $comment->formatted_created_at ?></br>
-                                            Commentaire:</br><?= $comment->comment ?></p></br>
+                                            <?php if ($comment->is_valid == 1): ?>
+                                                <p>Auteur: <strong><?= $comment->comment_author_firstname . ' ' . $comment->comment_author_lastname ?></strong> le <?= $comment->formatted_created_at ?></br>
+                                                Commentaire:</br><?= $comment->comment ?></p></br>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div>

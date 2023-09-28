@@ -2,7 +2,9 @@
 
 namespace src\controllers;
 
+use Models\Post;
 use Models\User;
+use Models\Comment;
 
 class UserController extends MainController {
 
@@ -74,10 +76,13 @@ class UserController extends MainController {
     // Récupére les informations des utilisateurs pour la mettre dans la vue administrateur des utilisateurs
     public function getUsers()
     {
+        $this->isAdmin();
+        
         $user = new User($this->getDB());
         $users = $user->getUsers();
 
         return $this->adminView('admin.users-admin', compact('users'));
+        return $this->view('layout', compact('users'));
     }
 
     public function editUserProfil(int $id)
@@ -87,4 +92,49 @@ class UserController extends MainController {
         
         return $this->view('blog.profil-edit', compact('user'));
     }
+
+    public function toggleUser(int $id)
+    {
+        $this->isAdmin();
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = new User($this->getDB());
+            $currentIsEnable = $user->getUserStatus($id);
+            $isEnable = $currentIsEnable;
+            $result = $user->toggleUserStatus($id, $isEnable);
+
+            if ($result) {
+                header('Location: /p5-ocr/admin/users?success=true');
+            } else {
+                header('Location: /p5-ocr/admin/users?error=true');
+            }
+        }
+    }
+
+    public function adminEditUserProfil(int $id)
+    {
+        $this->isAdmin();
+
+        $user = (new User($this->getDB()))->getUser($id);
+        $user = $user->getUser($id);
+        
+        return $this->adminView('admin.user-edit', compact('user'));
+    }
+    
+    public function adminUpdateUserProfil(int $id)
+    {
+
+        $this->isAdmin();
+
+        $userModel = (new User($this->getDB()))->getUser($id);
+
+        $result = $userModel->updateUserProfil($id, $_POST);
+    
+        if ($result) {
+           return header("Location: /p5-ocr/admin/users?success=true");
+            exit();
+        } else {
+            echo "Erreur lors de la modification";
+        }
+    }    
 }
