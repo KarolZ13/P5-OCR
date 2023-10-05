@@ -5,8 +5,8 @@ namespace Models;
 use PDO;
 use Models\DBConnection;
 
-class Post extends DBConnection {
-
+class Post extends DBConnection 
+{
     protected $table = 'posts';
     protected $db;
 
@@ -15,7 +15,7 @@ class Post extends DBConnection {
         $this->db = $db;
     }
 
-    // Récupère tous les articles
+    /** Récupère tous les articles **/
     public function getPosts(): array
     {
         return $this->query("
@@ -36,7 +36,7 @@ class Post extends DBConnection {
         ", null);
     }
 
-    // Récupère un article selon l'id
+    /** Récupère un article selon l'id **/
     public function getPost(int $id)
     {
         return $this->query("
@@ -59,20 +59,20 @@ class Post extends DBConnection {
             ", $id, true);
     }
     
-    // Récupére les catégories
+    /** Récupére les catégories **/
     public function getCategories()
     {
         return $this->query("SELECT * FROM categories");
     }
 
-    // Supression d'un article selon l'id
+    /** Supression d'un article selon l'id **/
     public function deletePost(int $id): bool
     {
         return $this->query("DELETE FROM posts WHERE id = ?", $id);
     }
 
 
-    // Changement de status d'un article (activé/désactivé)
+    /** Changement de status d'un article (activé/désactivé) **/
     public function togglePostStatus(int $id, int $newStatus)
     {
         
@@ -86,7 +86,7 @@ class Post extends DBConnection {
         return $stmt->execute();
     }
 
-    // Récupére le status de chaque articles 
+    /** Récupére le status de chaque articles **/
     public function getPostStatus(int $id)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT status FROM posts WHERE id = :id");
@@ -98,7 +98,7 @@ class Post extends DBConnection {
     }
 
 
-    // Mise à jour d'un article selon son id
+    /** Mise à jour d'un article selon son id **/
     public function updatePost(int $id, array $data)
     {
         $sql = "UPDATE posts SET title = :title, chapo = :chapo, content = :content, picture = :picture, id_categories = :id_categories WHERE id = :id";
@@ -114,7 +114,7 @@ class Post extends DBConnection {
         return $stmt->execute();
     }
     
-    // Ajouter un article
+    /** Ajouter un article **/
     public function addPost(string $title, string $content, string $chapo, ?string $picture, int $status, int $userId, int $id_categories, string $createdAt)
     {
         $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (title, content, chapo, picture, status, id_user, id_categories, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
@@ -122,7 +122,7 @@ class Post extends DBConnection {
         return $stmt->rowCount();
     }
 
-    // Désactiver un article selon l'id de l'utilisateur
+    /** Désactiver un article selon l'id de l'utilisateur **/
     public function disableUserPosts(int $userId)
     {
         return $this->query("UPDATE posts SET status = 0 WHERE id_user = ?", $userId);

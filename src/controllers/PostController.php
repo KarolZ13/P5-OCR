@@ -5,9 +5,10 @@ namespace src\controllers;
 use Models\Post;
 use Models\Comment;
 
-class PostController extends MainController {
+class PostController extends MainController 
+{
 
-    // Affiche les articles dans la vue utilisateur
+    /** Affiche les articles dans la vue utilisateur */
     public function posts()
     {
         $post = new Post($this->getDB());
@@ -16,7 +17,7 @@ class PostController extends MainController {
         return $this->view('blog.posts', compact('posts'));
     }
 
-    // Affiche les détails d'un article et ses commentaires selon son id
+    /** Affiche les détails d'un article et ses commentaires selon son id */
     public function show(int $id)
     {
         $post = new Post($this->getDB());
@@ -30,7 +31,7 @@ class PostController extends MainController {
 
 
 
-    // Mise à jour des informations d'un article sélectionné dans la vue Admin
+    /** Mise à jour des informations d'un article sélectionné dans la vue Admin */
     public function updatePost(int $id)
     {
         $this->isAdmin();
@@ -65,7 +66,7 @@ class PostController extends MainController {
         }
     }
 
-    // Suppression des informations d'un article sélectionné dans la vue administrateur
+    /** Suppression des informations d'un article sélectionné dans la vue administrateur */
     public function deletePost(int $id)
     {
 
@@ -87,7 +88,7 @@ class PostController extends MainController {
         }
     }
     
-    // Changement de status d'un article
+    /** Changement de status d'un article */
     public function togglePost(int $id)
     {
         $this->isAdmin();
@@ -107,7 +108,7 @@ class PostController extends MainController {
     }
 
 
-    // Affiche les informations des commentaires selon un article dans la vue administateur
+    /** Affiche les informations des commentaires selon un article dans la vue administateur */
     public function showCommentsByPost()
     {
         $this->isAdmin();
@@ -126,7 +127,7 @@ class PostController extends MainController {
         return $this->adminView('admin.comments-admin', ['posts' => $posts, 'commentsByPost' => $commentsByPost]);
     }
 
-    // Affiche les articles dans la vue administrateur
+    /** Affiche les articles dans la vue administrateur */
     public function showAdminPosts()
     {
         $this->isAdmin();
@@ -136,7 +137,7 @@ class PostController extends MainController {
         return $this->adminView('admin.posts-admin', compact('posts'));
     }
 
-    // Affiche les détails d'un article dans la vue administrateur selon son id pour modification
+    /** Affiche les détails d'un article dans la vue administrateur selon son id pour modification */
     public function editPost(int $id)
     {
         $this->isAdmin();
@@ -149,7 +150,7 @@ class PostController extends MainController {
     }
     
 
-    // Récupération des données du formulaire pour la création d'un article
+    /** Récupération des données du formulaire pour la création d'un article */
     public function createPost()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -187,7 +188,7 @@ class PostController extends MainController {
         }
     }
     
-    // Affiche la vue pour l'ajout d'un article dans l'espace administrateur
+    /** Affiche la vue pour l'ajout d'un article dans l'espace administrateur */
     public function addPostView()
     {
         $this->isAdmin();

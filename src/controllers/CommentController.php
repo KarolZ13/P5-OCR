@@ -5,9 +5,10 @@ namespace src\controllers;
 use Models\Comment;
 use Models\Post;
 
-class CommentController extends MainController {
+class CommentController extends MainController 
+{
 
-    // Récupération des informations pour l'ajout d'un commentaire par un utilisateur
+    /** Récupération des informations pour l'ajout d'un commentaire par un utilisateur */
     public function commentPost(int $postID)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,7 +31,7 @@ class CommentController extends MainController {
         }
     }
 
-    // Montre les informations des commentaires selon un post dans la vue Admin/Comments
+    /** Montre les informations des commentaires selon un post dans la vue Admin/Comments */
     public function showCommentsByPost()
     {
 
@@ -50,7 +51,7 @@ class CommentController extends MainController {
         return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));
     }
 
-    // Changement de status d'un commentaire
+    /** Changement de status d'un commentaire */
     public function toggleComment(int $id)
     {
         $this->isAdmin();
@@ -69,7 +70,7 @@ class CommentController extends MainController {
         }
     }
 
-    // Suppression d'un commentaire
+    /** Suppression d'un commentaire */
     public function deleteComment(int $id)
     {
 

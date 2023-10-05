@@ -5,7 +5,8 @@ namespace src\controllers;
 use Models\DBConnection;
 use Models\User;
 
-class MainController {
+class MainController 
+{
 
     protected $db;
 
@@ -18,7 +19,7 @@ class MainController {
         $this->db = $db;
     }
 
-    //Récupération de la vue utilisateur avec le layout
+    /**Récupération de la vue utilisateur avec le layout */
     protected function view(string $path, array $params = null)
     {
     ob_start();
@@ -28,7 +29,7 @@ class MainController {
     require VIEWS . 'layout.php';
     }
 
-    //Récupération de la vue administrateur avec le layout
+    /**Récupération de la vue administrateur avec le layout */
     protected function adminView(string $path, array $params = null)
     {
     ob_start();
@@ -38,19 +39,19 @@ class MainController {
     require VIEWS . 'layout-admin.php';
     }
 
-    //Récupération de la connexion à la BDD
+    /**Récupération de la connexion à la BDD */
     protected function getDB() 
     {
         return $this->db;
     }
 
-    //Vue de la page d'accueil
+    /**Vue de la page d'accueil */
     public function homepage()
     {
         return $this->view('blog.home-page');
     }
 
-    // Vérifie si l'utilisateur et administrateur
+    /** Vérifie si l'utilisateur et administrateur */
     protected function isAdmin()
     {
         if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin'] === 1 ) {
@@ -60,7 +61,7 @@ class MainController {
         }
     }
 
-    // Récupération des informations pour la vue de la page d'accueil administrateur
+    /** Récupération des informations pour la vue de la page d'accueil administrateur */
     public function homepageAdmin()
     {
         $this->isAdmin();

@@ -8,13 +8,13 @@ use Models\Comment;
 
 class UserController extends MainController {
 
-    // Affiche la vue de connexion
+    /** Affiche la vue de connexion */
     public function login() 
     {
         return $this->view('blog.login');
     }
 
-    // Récupére les informations soumis par l'utilisateur lors de la connexion
+    /** Récupére les informations soumis par l'utilisateur lors de la connexion */
     public function loginPost() 
     {
         $email = $_POST['email'];
@@ -40,7 +40,7 @@ class UserController extends MainController {
         }
     }
     
-    // Déconnexion de l'utilisateur
+    /** Déconnexion de l'utilisateur */
     public function logout()
     {
         session_destroy();
@@ -48,7 +48,7 @@ class UserController extends MainController {
         return header('Location: /p5-ocr/');
     }
 
-    // Récupére les informations d'inscription pour ajouter un utilisateur
+    /** Récupére les informations d'inscription pour ajouter un utilisateur */
     public function signInPost()
     {
         $lastname = $_POST['lastname'];
@@ -70,13 +70,13 @@ class UserController extends MainController {
     }
     
 
-    // Affiche la page d'inscription'
+    /** Affiche la page d'inscription' */
     public function signIn()
     {
     return $this->view('blog.signin');
     }
 
-    // Récupére les informations des utilisateurs pour la mettre dans la vue administrateur
+    /** Récupére les informations des utilisateurs pour la mettre dans la vue administrateur */
     public function getUsers()
     {
         $this->isAdmin();
@@ -88,7 +88,7 @@ class UserController extends MainController {
         return $this->view('layout', compact('users'));
     }
 
-    // Affiche la page de modification d'un profil
+    /** Affiche la page de modification d'un profil */
     public function editUserProfil(int $id)
     {
         $user = (new User($this->getDB()))->getUser($id);
@@ -97,7 +97,7 @@ class UserController extends MainController {
         return $this->view('blog.profil-edit', compact('user'));
     }
 
-    // Changement de status d'un utilisateur (activé/désactivé)
+    /** Changement de status d'un utilisateur (activé/désactivé) */
     public function toggleUser(int $id)
     {
         $this->isAdmin();
@@ -116,7 +116,7 @@ class UserController extends MainController {
         }
     }
 
-    // Affiche la page d'édition d'un profil dans l'espace administrateur
+    /** Affiche la page d'édition d'un profil dans l'espace administrateur */
     public function adminEditUserProfil(int $id)
     {
         $this->isAdmin();
@@ -127,7 +127,7 @@ class UserController extends MainController {
         return $this->adminView('admin.user-edit', compact('user'));
     }
     
-    // Récupération des informations mise à jour pour le profil d'un utilisateur dans l'espace administrateur
+    /** Récupération des informations mise à jour pour le profil d'un utilisateur dans l'espace administrateur */
     public function adminUpdateUserProfil(int $id)
     {
         $this->isAdmin();
@@ -164,7 +164,7 @@ class UserController extends MainController {
     }
     
     
-    // Suppression d'un utilisateur dans l'espace administrateur
+    /** Suppression d'un utilisateur dans l'espace administrateur */
     public function deleteUser(int $id)
     {
         $this->isAdmin();
@@ -175,15 +175,13 @@ class UserController extends MainController {
 
             if ($result) {
                 header('Location: /p5-ocr/admin/users?success=true');
-                exit();
             } else {
                 header('Location: /p5-ocr/admin/users?error=true');
-                exit();
             }
         }
     }
 
-    // Modification de l'utilisateur en administrateur
+    /** Modification de l'utilisateur en administrateur */
     public function setUserAdmin(int $id)
     {
         $this->isAdmin();
@@ -194,15 +192,13 @@ class UserController extends MainController {
 
             if ($result) {
                 header('Location: /p5-ocr/admin/users?success=true');
-                exit();
             } else {
                 header('Location: /p5-ocr/admin/users?error=true');
-                exit();
             }
         }
     }
 
-    // Mise à jour du profil d'un utilisateur
+    /** Mise à jour du profil d'un utilisateur */
     public function updateUserProfil(int $id)
     {
         if (!$id) {
@@ -235,7 +231,6 @@ class UserController extends MainController {
     
         if ($result) {
             return header("Location: /p5-ocr/profil/{$id}?success=true");
-            exit();
         } else {
             echo "Erreur lors de la modification";
         }

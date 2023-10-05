@@ -6,14 +6,12 @@ use PDO;
 
 class DBConnection
 {
-
     private $dbname;
     private $host;
     private $username;
     private $password;
     private $pdo;
     protected $db;
-
 
     public function __construct(string $dbname, string $host, string $username, string $password)
     {
@@ -23,7 +21,7 @@ class DBConnection
         $this->password = $password;
     }
 
-    //Connexion à la BDD
+    /** Connexion à la BDD **/
     public function getPDO(): PDO
     {
         return $this->pdo ?? $this->pdo = new PDO("mysql:dbname={$this->dbname};host={$this->host}", $this->username, $this->password, [
@@ -33,7 +31,7 @@ class DBConnection
         ]);
     }
 
-    //Mise en place de la fonction query selon la requête demandée
+    /** Mise en place de la fonction query selon la requête demandée **/
     public function query(string $sql, int $param = null, bool $single = null)
     {
         $method = is_null($param) ? 'query' : 'prepare';

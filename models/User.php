@@ -15,7 +15,7 @@ class User extends DBConnection {
         $this->db = $db;
     }
 
-    // Récupère les informations d'un utilisateur selon son email en BDD
+    /** Récupère les informations d'un utilisateur selon son email en BDD */
     public function getByEmail(string $email)
     {
         $stmt = $this->db->getPDO()->prepare('SELECT * FROM ' . $this->table . ' WHERE email = ?');
@@ -29,7 +29,7 @@ class User extends DBConnection {
         return $this->query("SELECT * FROM {$this->table} WHERE id = ?", $id, true);
     }
 
-    // Ajoute un utilisateur en BDD
+    /** Ajoute un utilisateur en BDD */
     public function addUser(string $lastname, string $firstname, string $email, string $password)
     {
         $existingUser = $this->getByEmail($email);
@@ -44,13 +44,13 @@ class User extends DBConnection {
         return $stmt->rowCount();
     }
 
-    // Récupère toutes les informations des utilisateurs en BDD
+    /** Récupère toutes les informations des utilisateurs en BDD */
     public function getUsers(): array
     {
         return $this->query("SELECT * FROM users ORDER BY id DESC", null);
     }
 
-    // Récupère le nombre de commentaire créé par un utilisateur
+    /** Récupère le nombre de commentaire créé par un utilisateur */
     public function getUsersWithCommentCounts(): array
     {
         return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(c.id) as comment_count
@@ -59,7 +59,7 @@ class User extends DBConnection {
                 GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
     }
 
-    // Récupère le nombre d'article créé par un utilisateur
+    /** Récupère le nombre d'article créé par un utilisateur */
     public function getUsersWithPostCounts(): array
     {
         return $this->query("SELECT u.id, u.firstname, u.lastname, u.email, u.is_admin, COUNT(p.id) as post_count
@@ -68,7 +68,7 @@ class User extends DBConnection {
         GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
     }
 
-    // Changement du status de l'utilisateur (activé/désactivé)
+    /** Changement du status de l'utilisateur (activé/désactivé) */
     public function setUserStatus(int $id, int $isEnable)
     {
         
@@ -82,7 +82,7 @@ class User extends DBConnection {
         return $stmt->execute();
     }
 
-    // Récupération du status d'un utilisateur
+    /** Récupération du status d'un utilisateur */
     public function getUserStatus(int $id)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT is_enable FROM users WHERE id = :id");
@@ -93,7 +93,7 @@ class User extends DBConnection {
         return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
-    // Modification du profil d'un utilisateur
+    /** Modification du profil d'un utilisateur */
     public function setUserProfil(int $id, array $data)
     {
         $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, avatar = :avatar";
@@ -120,7 +120,7 @@ class User extends DBConnection {
         return $stmt->execute();
     }
 
-    // Suppression de l'utilisateur et de ses commentaires
+    /** Suppression de l'utilisateur et de ses commentaires */
     public function deleteUserAndComments(int $userId)
     {
         $this->db->getPDO()->beginTransaction();
@@ -134,7 +134,7 @@ class User extends DBConnection {
             return true;
     }
 
-    // Mettre le status d'un utilisateur en administrateur
+    /** Mettre le status d'un utilisateur en administrateur */
     public function setUserAdmin(int $id)
     {
         $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_admin = 1 WHERE id = :id");

@@ -5,8 +5,8 @@ namespace Models;
 use PDO;
 use Models\DBConnection;
 
-class Comment extends DBConnection {
-
+class Comment extends DBConnection 
+{
     protected $table = 'comments';
     protected $db;
 
@@ -15,7 +15,7 @@ class Comment extends DBConnection {
         $this->db = $db;
     }
 
-    //Récupèrer les commentaires en BDD d'un post
+    /** Récupèrer les commentaires en BDD d'un post */
     public function getCommentsByPostId(int $postId)
     {
         $stmt = $this->db->getPDO()->prepare("
@@ -40,7 +40,7 @@ class Comment extends DBConnection {
         return $stmt->fetchAll();
     }
 
-    // Supprimer les commentaires associés à un seul article.
+    /** Supprimer les commentaires associés à un seul article. */
     public function deleteCommentsForPost(int $postId)
     {
         return $this->query("DELETE FROM comments WHERE id_post = ?", $postId);
@@ -55,13 +55,13 @@ class Comment extends DBConnection {
         return $stmt->rowCount();
     }
 
-    // Désactiver les commentaires d'un utilisateur
+    /** Désactiver les commentaires d'un utilisateur*/
     public function disableUserComments(int $userId)
     {
         return $this->query("UPDATE comments SET is_valid = 0 WHERE id_user = ?", $userId);
     }
 
-    // Changement de status (activé/désactivé) pour un commentaire
+    /** Changement de status (activé/désactivé) pour un commentaire */
     public function toggleCommentStatus(int $id, int $newStatus)
     {
         
@@ -75,7 +75,7 @@ class Comment extends DBConnection {
         return $stmt->execute();
     }
 
-    // Récupération du status du commentaire (activé/désactivé)
+    /** Récupération du status du commentaire (activé/désactivé) */
     public function getCommentStatus(int $id)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT is_valid FROM comments WHERE id = :id");
@@ -86,7 +86,7 @@ class Comment extends DBConnection {
         return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
-    // Suppression d'un commentaire
+    /** Suppression d'un commentaire */
     public function deleteComment(int $id)
     {
         return $this->query("DELETE FROM comments WHERE id = ?", $id);
