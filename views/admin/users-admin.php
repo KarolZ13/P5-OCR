@@ -93,6 +93,15 @@
                                                 </button>
                                             </span>
                                         </form>
+                                        <?php if (!$user->is_admin) : ?>
+                                        <form action="/p5-ocr/admin/user/admin/<?= $user->id ?>" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-outline-light" title="Passer l'utilisateur en administrateur" style="--bs-btn-color: green;--bs-btn-border-color: green;--bs-btn-hover-color: #000;--bs-btn-hover-bg: green;--bs-btn-hover-border-color: green;--bs-btn-focus-shadow-rgb: 255, 193, 7;--bs-btn-active-color: #000;--bs-btn-active-bg: green;--bs-btn-active-border-color: green;--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);--bs-btn-disabled-color: green;--bs-btn-disabled-bg: transparent;--bs-btn-disabled-border-color: green;--bs-gradient: none;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16" >
+                                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        <?php endif ?>
                                         <form action="/p5-ocr/admin/user/status/<?= $user->id ?>" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="<?= $user->id ?>">
                                             <?php if ($user->is_enable): ?>
@@ -111,6 +120,18 @@
                                                 </button>
                                             <?php endif ?>
                                         </form>
+                                        <?php if (!$user->is_admin) : ?>
+                                            <form action="/p5-ocr/admin/user/delete/<?= $user->id ?>" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="<?= $user->id ?>">
+                                                <button type="submit" onclick="return confirm('Voulez-vous supprimer définitivement cet utilisateur ?')" class="btn btn-outline-danger" title="Supprimer le commentaire">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        <?php else : ?>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>

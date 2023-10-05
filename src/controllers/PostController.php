@@ -7,7 +7,7 @@ use Models\Comment;
 
 class PostController extends MainController {
 
-    // Affiche les posts dans la vue utilisateur des articles
+    // Affiche les articles dans la vue utilisateur
     public function posts()
     {
         $post = new Post($this->getDB());
@@ -23,32 +23,49 @@ class PostController extends MainController {
         $post = $post->getPost($id);
 
         $commentModel = new Comment($this->getDB());
-        $comments = $commentModel->findCommentsByPostId($id);
+        $comments = $commentModel->getCommentsByPostId($id);
         
         return $this->view('blog.details-post', compact('post', 'comments'));
     }
 
 
 
-    // Met à jour les informations d'un article sélectionné dans la vue Admin
+    // Mise à jour des informations d'un article sélectionné dans la vue Admin
     public function updatePost(int $id)
     {
-
         $this->isAdmin();
-
         $postModel = (new Post($this->getDB()))->getPost($id);
-
-        $result = $postModel->updatePost($id, $_POST);
     
-        if ($result) {
-           return header("Location: /p5-ocr/admin/posts/edit/{$id}?success=true");
-            exit();
-        } else {
-            echo "Erreur lors de la modification";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+    
+            if (isset($_FILES['new_picture']) && $_FILES['new_picture']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '/p5-ocr/public/assets/img/';
+                $originalFileName = $_FILES['new_picture']['name'];
+                $newFileName = uniqid() . '_' . $originalFileName;
+            
+                if (!empty($postModel->picture)) {
+                    unlink($uploadDir . $postModel->picture);
+                }
+            
+                move_uploaded_file($_FILES['new_picture']['tmp_name'], $uploadDir . $newFileName);
+            
+                $data['picture'] = $originalFileName;
+            } else {
+                $data['picture'] = $postModel->picture;
+            }
+    
+            $result = $postModel->updatePost($id, $data);
+    
+            if ($result) {
+                return header("Location: /p5-ocr/admin/posts/edit/{$id}?success=true");
+            } else {
+                echo "Erreur lors de la modification";
+            }
         }
-    }    
+    }
 
-    // Supprime les informations d'un article sélectionné dans la vue administrateur des articles
+    // Suppression des informations d'un article sélectionné dans la vue administrateur
     public function deletePost(int $id)
     {
 
@@ -70,6 +87,7 @@ class PostController extends MainController {
         }
     }
     
+    // Changement de status d'un article
     public function togglePost(int $id)
     {
         $this->isAdmin();
@@ -89,7 +107,7 @@ class PostController extends MainController {
     }
 
 
-    // Montre les informations des commentaires selon un article dans la vue administateur des commentaires
+    // Affiche les informations des commentaires selon un article dans la vue administateur
     public function showCommentsByPost()
     {
         $this->isAdmin();
@@ -101,15 +119,15 @@ class PostController extends MainController {
         $commentsByPost = [];
     
         foreach ($posts as $post) {
-            $comments = $commentModel->findCommentsByPostId($post->id);
+            $comments = $commentModel->getCommentsByPostId($post->id);
             $commentsByPost[$post->id] = $comments;
         }
     
         return $this->adminView('admin.comments-admin', ['posts' => $posts, 'commentsByPost' => $commentsByPost]);
     }
 
-    // Affiche les articls dans la vue administrateur des articles
-    public function getAdminPosts()
+    // Affiche les articles dans la vue administrateur
+    public function showAdminPosts()
     {
         $this->isAdmin();
 
@@ -122,12 +140,14 @@ class PostController extends MainController {
     public function editPost(int $id)
     {
         $this->isAdmin();
-
+    
         $post = (new Post($this->getDB()))->getPost($id);
-        $post = $post->getPost($id);
-        
-        return $this->adminView('admin.post-edit', compact('post'));
+        $categories = (new Post($this->getDB()))->getCategories();
+        $id_categories = $post->id_categories;
+    
+        return $this->adminView('admin.post-edit', compact('post', 'categories', 'id_categories'));
     }
+    
 
     // Récupération des données du formulaire pour la création d'un article
     public function createPost()
@@ -136,9 +156,11 @@ class PostController extends MainController {
             $title = $_POST['title'];
             $content = $_POST['content'];
             $chapo = $_POST['chapo'];
-            $status = 0;
+            $status = 1;
             $idUser = $_SESSION['auth']['id'];
             $createdAt = date("Y/m/d");
+            $id_categories = (int)$_POST['id_categories'];
+            
     
             if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
                 $picture = $_FILES['picture']['name'];
@@ -155,7 +177,7 @@ class PostController extends MainController {
     
             $postModel = new Post($this->getDB());
     
-            $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $createdAt);
+            $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $id_categories, $createdAt);
     
             if ($result === 1) {
                 return header("Location: /p5-ocr/admin/posts");
@@ -165,12 +187,14 @@ class PostController extends MainController {
         }
     }
     
-
+    // Affiche la vue pour l'ajout d'un article dans l'espace administrateur
     public function addPostView()
     {
         $this->isAdmin();
 
-        return $this->Adminview('admin.post-add');
-    }
+        $categories = (new Post($this->getDB()))->getCategories();
+        $post = null;
 
+        return $this->adminView('admin.post-add', compact('categories', 'post'));
+    }
 }

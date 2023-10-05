@@ -44,20 +44,23 @@
             <div class="container px-4 px-lg-5">
                 <div class="card-deck">
                     <?php foreach ($params['posts'] as $post): ?>
-                        <div class="col-lg-4 col-md-6 col-12 my-3">
-                            <div class="card h-100 bg-dark text-light box-glow-1">
-                                <a href="/p5-ocr/post/<?= $post->id ?>">
-                                    <img class="card-img-top" src=" <?= '/p5-ocr/public/assets/img/'.$post->picture ?>" alt="Card image cap">
-                                </a>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= $post->title ?></h5>
-                                    <p class="card-text"><?= $post->chapo ?></p>
-                                </div>
-                                <div class="card-footer">
-                                    <small class="text-muted">Publié le : <?= $post->formatted_date ?></small>
+                        <?php if ($post->status == 1): ?>
+                            <div class="col-lg-4 col-md-6 col-12 my-3">
+                                <div class="card h-100 bg-dark text-light box-glow-1">
+                                    <a href="/p5-ocr/post/<?= $post->id ?>">
+                                        <img class="card-img-top" src=" <?= '/p5-ocr/public/assets/img/'.$post->picture ?>" alt="Card image cap">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?= $post->title ?></h5>
+                                        <p class="card-text"><?= $post->chapo ?></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">Publié le : <?= $post->formatted_date ?> - Catégorie : <?= $post->category_name ?></small>
+                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     <?php endforeach ?>
                 </div>
             </div>

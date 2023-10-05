@@ -19,7 +19,7 @@
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <form action="/p5-ocr/admin/posts/edit/<?= $params['post']->id ?>" method="post">
+                        <form action="/p5-ocr/admin/posts/edit/<?= $params['post']->id ?>" method="post" enctype="multipart/form-data">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="title">Titre de l'article :</label>
                                 <input type="text" class="form-control" name="title" id="title" value="<?= $params['post']->title ?>">
@@ -31,8 +31,23 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="content">Contenu de l'article :</label>
                                 <textarea name="content" id="content" rows ="12" class="form-control"><?= $params['post']->content ?></textarea>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="id_categories">Catégorie de l'article :</label>
+                                <select name="id_categories" id="id_categories" class="form-control">
+                                    <?php foreach ($params['categories'] as $category) : ?>
+                                        <option value="<?= $category->id ?>" <?= ($category->id == $params['post']->id_categories) ? 'selected' : '' ?>>
+                                            <?= $category->name ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="new_picture">Ajouter une image à l'article :</label>
+                                <input type="file" name="new_picture" id="new_picture">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Enregistrer les modifications</button>
                         </form>
-                        <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Enregistrer les modifications</button>
                     </div>
                 </div>
             </div>

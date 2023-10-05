@@ -38,14 +38,14 @@
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                             <?php if ($params['user']->avatar !== null): ?>
-                                    <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $user->avatar ?>" alt="Card image cap">
+                                    <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $params['user']->avatar ?>" alt="Card image cap">
                                 <?php else: ?>
                                     <img style="width: 276px; height:180px" src="/p5-ocr/public/assets/img/avatar-default.png" style="width: 100%; height: 100%;" alt="Avatar" />
                                 <?php endif; ?>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="avatar">Ajouter un avatar :</label>
-                                <input type="file" name="avatar" id="avatar">
+                                <label for="avatar">Ajouter un nouvel avatar :</label>
+                                <input type="file" name="new_avatar" id="new_avatar">
                             </div>
                             <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Enregistrer les modifications</button>
                         </form>

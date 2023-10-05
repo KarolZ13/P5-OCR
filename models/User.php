@@ -30,8 +30,14 @@ class User extends DBConnection {
     }
 
     // Ajoute un utilisateur en BDD
-        public function addUser(string $lastname, string $firstname, string $email, string $password)
+    public function addUser(string $lastname, string $firstname, string $email, string $password)
     {
+        $existingUser = $this->getByEmail($email);
+        
+        if ($existingUser) {
+            return -1;
+        }
+    
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
         $stmt->execute([$lastname, $firstname, $email, $hashedPassword]);
@@ -62,7 +68,8 @@ class User extends DBConnection {
         GROUP BY u.id, u.firstname, u.lastname, u.email, u.is_admin", null);
     }
 
-    public function toggleUserStatus(int $id, int $isEnable)
+    // Changement du status de l'utilisateur (activé/désactivé)
+    public function setUserStatus(int $id, int $isEnable)
     {
         
         if ($isEnable == 0) {
@@ -75,6 +82,7 @@ class User extends DBConnection {
         return $stmt->execute();
     }
 
+    // Récupération du status d'un utilisateur
     public function getUserStatus(int $id)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT is_enable FROM users WHERE id = :id");
@@ -85,19 +93,53 @@ class User extends DBConnection {
         return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
-    public function updateUserProfil(int $id, array $data)
+    // Modification du profil d'un utilisateur
+    public function setUserProfil(int $id, array $data)
     {
-        $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, avatar = :avatar WHERE id = :id";
+        $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, avatar = :avatar";
+        
+        if (!empty($data['password'])) {
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $sql .= ", password = :password";
+        }
+        
+        $sql .= " WHERE id = :id";
     
         $stmt = $this->db->getPDO()->prepare($sql);
-    
+        
         $stmt->bindValue(':firstname', $data['firstname'], PDO::PARAM_STR);
         $stmt->bindValue(':lastname', $data['lastname'], PDO::PARAM_STR);
         $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
-        $stmt->bindValue(':password', $data['password'], PDO::PARAM_STR);
-        $stmt->bindValue(':avatar', $data['acatar'], PDO::PARAM_STR);
+        $stmt->bindValue(':avatar', $data['avatar'], PDO::PARAM_STR);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     
+        if (!empty($data['password'])) {
+            $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        }
+    
+        return $stmt->execute();
+    }
+
+    // Suppression de l'utilisateur et de ses commentaires
+    public function deleteUserAndComments(int $userId)
+    {
+        $this->db->getPDO()->beginTransaction();
+
+            $this->query("DELETE FROM comments WHERE id_user = ?", $userId);
+
+            $this->query("DELETE FROM users WHERE id = ?", $userId);
+
+            $this->db->getPDO()->commit();
+
+            return true;
+    }
+
+    // Mettre le status d'un utilisateur en administrateur
+    public function setUserAdmin(int $id)
+    {
+        $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_admin = 1 WHERE id = :id");
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }

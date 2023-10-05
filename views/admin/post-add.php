@@ -33,6 +33,16 @@
                                 <label for="picture">Ajouter une image à l'article :</label>
                                 <input type="file" name="picture" id="picture">
                             </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="id_categories">Catégorie de l'article :</label>
+                                <select name="id_categories" id="id_categories" class="form-control">
+                                    <?php foreach ($params['categories'] as $category) : ?>
+                                        <option value="<?= $category->id ?>">
+                                            <?= $category->name ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Enregistrer les modifications</button>
                         </form>
                     </div>

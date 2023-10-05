@@ -76,7 +76,7 @@
                                     <p class="card-text"><?= $post->chapo ?></p>
                                 </div>
                                 <div class="card-footer">
-                                    <small class="text-muted">Publié le : <?= $post->formatted_date ?></small></br></br>
+                                    <small class="text-muted">Publié le : <?= $post->formatted_date ?>  - Catégorie : <?= $post->category_name ?></small></br></br>
                                     <form action="/p5-ocr/admin/posts/edit/<?= $post->id ?>" method="get" class="d-inline justify-content: center;">
                                         <input type="hidden" name="id" value="<?= $post->id ?>">
                                         <span>

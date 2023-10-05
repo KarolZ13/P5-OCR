@@ -16,10 +16,11 @@ class Comment extends DBConnection {
     }
 
     //Récupèrer les commentaires en BDD d'un post
-    public function findCommentsByPostId(int $postId)
+    public function getCommentsByPostId(int $postId)
     {
         $stmt = $this->db->getPDO()->prepare("
             SELECT 
+            comments.id,
             comments.comment,
             comments.is_valid,
             DATE_FORMAT(comments.created_at, '%d/%m/%Y') AS formatted_created_at,
@@ -58,5 +59,36 @@ class Comment extends DBConnection {
     public function disableUserComments(int $userId)
     {
         return $this->query("UPDATE comments SET is_valid = 0 WHERE id_user = ?", $userId);
+    }
+
+    // Changement de status (activé/désactivé) pour un commentaire
+    public function toggleCommentStatus(int $id, int $newStatus)
+    {
+        
+        if ($newStatus == 0) {
+            $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 1 WHERE id = :id");
+        } else {
+            $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 0 WHERE id = :id");
+        }
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    // Récupération du status du commentaire (activé/désactivé)
+    public function getCommentStatus(int $id)
+    {
+        $stmt = $this->db->getPDO()->prepare("SELECT is_valid FROM comments WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_COLUMN);
+    }
+
+    // Suppression d'un commentaire
+    public function deleteComment(int $id)
+    {
+        return $this->query("DELETE FROM comments WHERE id = ?", $id);
     }
 }

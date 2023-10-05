@@ -7,7 +7,7 @@ require '../vendor/autoload.php';
 
 define('VIEWS', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR);
 define('SCRIPTS', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
-define('DB_NAME', 'p5_ocr');
+define('DB_NAME', 'p5_ocr-');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PWD', '');
@@ -28,11 +28,13 @@ $router->get('/admin/user/edit/:id', 'src\controllers\UserController@adminEditUs
 $router->post('admin/user/edit/:id', 'src\controllers\UserController@adminUpdateUserProfil');
 $router->get('/admin/users', 'src\controllers\UserController@getUsers');
 $router->post('/admin/user/status/:id', 'src\controllers\UserController@toggleUser');
+$router->post('/admin/user/delete/:id', 'src\controllers\UserController@deleteUser');
+$router->post('/admin/user/admin/:id', 'src\controllers\UserController@setUserAdmin');
 
 $router->get('/posts', 'src\controllers\PostController@posts');
 $router->get('/post/:id', 'src\controllers\PostController@show');
 $router->get('/admin', 'src\controllers\PostController@homepageAdmin');
-$router->get('/admin/posts', 'src\controllers\PostController@getAdminPosts');
+$router->get('/admin/posts', 'src\controllers\PostController@showAdminPosts');
 $router->post('/admin/posts/status/:id', 'src\controllers\PostController@togglePost');
 $router->post('/admin/posts/delete/:id', 'src\controllers\PostController@deletePost');
 $router->get('/admin/posts/edit/:id', 'src\controllers\PostController@editPost');
@@ -40,6 +42,9 @@ $router->post('/admin/posts/edit/:id', 'src\controllers\PostController@updatePos
 $router->get('/admin/comments', 'src\controllers\PostController@showCommentsByPost');
 $router->get('/admin/post/add', 'src\controllers\PostController@addPostView');
 $router->post('/admin/post/add', 'src\controllers\PostController@createPost');
+
+$router->post('/admin/comment/status/:id', 'src\controllers\CommentController@toggleComment');
+$router->post('/admin/comment/delete/:id', 'src\controllers\CommentController@deleteComment');
 
 $router->post('/post/:id', 'src\controllers\CommentController@commentPost');
 

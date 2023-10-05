@@ -2,6 +2,16 @@
 <html lang="en">
     <head>
         <title>Editer l'article : <?= $params['post']->title ?></title>
+        <style>        
+        .btn-primary {
+            --bs-btn-bg: #5155599e;
+            --bs-btn-border-color: #515559;
+            --bs-btn-hover-bg: #515559;
+            --bs-btn-hover-border-color: #ffffff;
+            --bs-btn-active-bg: none;
+            --bs-btn-active-border-color: #ffffff;
+        }
+        </style>
     </head>
     <body style="background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 80%, rgba(0,0,0,1) 100%);">
         <!-- Page Header-->
@@ -31,9 +41,12 @@
         </header>
         <main>
             <div class="container position-relative px-4 px-lg-5">
+                <?php if (isset($_GET['success'])): ?>
+                    <div class="alert alert-success">Les modifications ont été pris en compte.</div>
+                <?php endif ?>
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <form action="/p5-ocr/profil/<?= $params['user']->id ?>" method="post">
+                        <form action="/p5-ocr/profil/<?= $params['user']->id ?>" method="POST" enctype="multipart/form-data">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="firstname">Prénom :</label>
                                 <input type="text" class="form-control" name="firstname" id="firstname" value="<?= $params['user']->firstname ?>">
@@ -43,14 +56,26 @@
                                 <input type="text" class="form-control" name="lastname" id="lastname" value="<?= $params['user']->lastname ?>">
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="chapo">Mot de passe :</label>
-                                <textarea name="chapo" id="chapo" rows ="5" class="form-control"><?= $params['user']->lastname ?></textarea>
+                                <label for="email">Adresse mail :</label>
+                                <input type="text" class="form-control" name="email" id="email" value="<?= $params['user']->email ?>">
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="content">Avatar :</label>
-                                <textarea name="content" id="content" rows ="12" class="form-control"><?= $params['user']->lastname ?></textarea>
+                                <label for="password">Mot de passe :</label>
+                                <input type="password" class="form-control" name="password" id="password" value="">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                            <?php if ($params['user']->avatar !== null): ?>
+                                    <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $params['user']->avatar ?>" alt="Card image cap">
+                                <?php else: ?>
+                                    <img style="width: 276px; height:180px" src="/p5-ocr/public/assets/img/avatar-default.png" style="width: 100%; height: 100%;" alt="Avatar" />
+                                <?php endif; ?>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="avatar">Ajouter un avatar :</label>
+                                <input type="file" name="avatar" id="avatar">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem; margin-bottom: 30px;">Enregistrer les modifications</button>
                         </form>
-                        <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Enregistrer les modifications</button>
                     </div>
                 </div>
             </div>

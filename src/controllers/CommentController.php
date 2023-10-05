@@ -7,7 +7,7 @@ use Models\Post;
 
 class CommentController extends MainController {
 
-    // Récupération des informations d'un ajout de commentaire par un utilisateur
+    // Récupération des informations pour l'ajout d'un commentaire par un utilisateur
     public function commentPost(int $postID)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -43,10 +43,49 @@ class CommentController extends MainController {
         $commentsByPost = [];
     
         foreach ($posts as $post) {
-            $comments = $commentModel->findCommentsByPostId($post->id);
+            $comments = $commentModel->getCommentsByPostId($post->id);
             $commentsByPost[$post->id] = $comments;
         }
     
         return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));
+    }
+
+    // Changement de status d'un commentaire
+    public function toggleComment(int $id)
+    {
+        $this->isAdmin();
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $comment = new Comment($this->getDB());
+            $currentStatus = $comment->getCommentStatus($id);
+            $newStatus = $currentStatus;
+            $result = $comment->toggleCommentStatus($id, $newStatus);
+
+            if ($result) {
+                header('Location: /p5-ocr/admin/comments?success=true');
+            } else {
+                header('Location: /p5-ocr/admin/comments?error=true');
+            }
+        }
+    }
+
+    // Suppression d'un commentaire
+    public function deleteComment(int $id)
+    {
+
+        $this->isAdmin();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $comment = new Comment($this->getDB());
+            $result = $comment->deleteComment($id);
+            
+    
+            if ($result) {
+                header('Location: /p5-ocr/admin/comments?success=true');
+            } else {
+                header('Location: /p5-ocr/admin/comments?error=true');
+            }
+        }
     }
 }

@@ -32,6 +32,9 @@
         <!-- Main Content-->
         <main class="mb-4">
             <div class="container px-4 px-lg-5">
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger" style="margin-top: 1rem">L'adresse mail renseignée est déjà utilisée!</div>
+                <?php endif ?>
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="my-5">

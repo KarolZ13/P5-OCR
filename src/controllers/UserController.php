@@ -62,10 +62,13 @@ class UserController extends MainController {
     
         if ($result === 1) {
             return header('Location: /p5-ocr/login?success=true');
+        } elseif ($result === -1) {
+            return header('Location: /p5-ocr/signin?error=email_taken');
         } else {
             return header ('Location: /p5-ocr/signin');
         }
     }
+    
 
     // Affiche la page d'inscription'
     public function signIn()
@@ -73,7 +76,7 @@ class UserController extends MainController {
     return $this->view('blog.signin');
     }
 
-    // Récupére les informations des utilisateurs pour la mettre dans la vue administrateur des utilisateurs
+    // Récupére les informations des utilisateurs pour la mettre dans la vue administrateur
     public function getUsers()
     {
         $this->isAdmin();
@@ -85,6 +88,7 @@ class UserController extends MainController {
         return $this->view('layout', compact('users'));
     }
 
+    // Affiche la page de modification d'un profil
     public function editUserProfil(int $id)
     {
         $user = (new User($this->getDB()))->getUser($id);
@@ -93,6 +97,7 @@ class UserController extends MainController {
         return $this->view('blog.profil-edit', compact('user'));
     }
 
+    // Changement de status d'un utilisateur (activé/désactivé)
     public function toggleUser(int $id)
     {
         $this->isAdmin();
@@ -101,7 +106,7 @@ class UserController extends MainController {
             $user = new User($this->getDB());
             $currentIsEnable = $user->getUserStatus($id);
             $isEnable = $currentIsEnable;
-            $result = $user->toggleUserStatus($id, $isEnable);
+            $result = $user->setUserStatus($id, $isEnable);
 
             if ($result) {
                 header('Location: /p5-ocr/admin/users?success=true');
@@ -111,6 +116,7 @@ class UserController extends MainController {
         }
     }
 
+    // Affiche la page d'édition d'un profil dans l'espace administrateur
     public function adminEditUserProfil(int $id)
     {
         $this->isAdmin();
@@ -121,20 +127,117 @@ class UserController extends MainController {
         return $this->adminView('admin.user-edit', compact('user'));
     }
     
+    // Récupération des informations mise à jour pour le profil d'un utilisateur dans l'espace administrateur
     public function adminUpdateUserProfil(int $id)
     {
-
         $this->isAdmin();
-
+    
         $userModel = (new User($this->getDB()))->getUser($id);
-
-        $result = $userModel->updateUserProfil($id, $_POST);
+        $userData = $_POST;
+    
+        if (empty($userData['password'])) {
+            unset($userData['password']);
+        }
+    
+        if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '/p5-ocr/public/assets/img/';
+            $newAvatarFileName = $_FILES['new_avatar']['name'];
+            $uploadPath = $uploadDir . $newAvatarFileName;
+    
+            if (!empty($userModel->avatar)) {
+                unlink($uploadDir . $userModel->avatar);
+            }
+    
+            move_uploaded_file($_FILES['new_avatar']['tmp_name'], $uploadPath);
+            $userData['avatar'] = $newAvatarFileName;
+        } else {
+            $userData['avatar'] = $userModel->avatar;
+        }
+    
+        $result = $userModel->setUserProfil($id, $userData);
     
         if ($result) {
-           return header("Location: /p5-ocr/admin/users?success=true");
+            return header("Location: /p5-ocr/admin/users?success=true");
+        } else {
+            echo "Erreur lors de la modification";
+        }
+    }
+    
+    
+    // Suppression d'un utilisateur dans l'espace administrateur
+    public function deleteUser(int $id)
+    {
+        $this->isAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userModel = new User($this->getDB());
+            $result = $userModel->deleteUserAndComments($id);
+
+            if ($result) {
+                header('Location: /p5-ocr/admin/users?success=true');
+                exit();
+            } else {
+                header('Location: /p5-ocr/admin/users?error=true');
+                exit();
+            }
+        }
+    }
+
+    // Modification de l'utilisateur en administrateur
+    public function setUserAdmin(int $id)
+    {
+        $this->isAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userModel = new User($this->getDB());
+            $result = $userModel->setUserAdmin($id);
+
+            if ($result) {
+                header('Location: /p5-ocr/admin/users?success=true');
+                exit();
+            } else {
+                header('Location: /p5-ocr/admin/users?error=true');
+                exit();
+            }
+        }
+    }
+
+    // Mise à jour du profil d'un utilisateur
+    public function updateUserProfil(int $id)
+    {
+        if (!$id) {
+            return header("Location: /p5-ocr/error");
+        }
+
+        $userModel = (new User($this->getDB()))->getUser($id);
+        $userData = $_POST;
+    
+        if (empty($userData['password'])) {
+            unset($userData['password']);
+        }
+    
+        if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '/p5-ocr/public/assets/img/';
+            $newAvatarFileName = $_FILES['new_avatar']['name'];
+            $uploadPath = $uploadDir . $newAvatarFileName;
+    
+            if (!empty($userModel->avatar)) {
+                unlink($uploadDir . $userModel->avatar);
+            }
+    
+            move_uploaded_file($_FILES['new_avatar']['tmp_name'], $uploadPath);
+            $userData['avatar'] = $newAvatarFileName;
+        } else {
+            $userData['avatar'] = $userModel->avatar;
+        }
+    
+        $result = $userModel->setUserProfil($id, $userData);
+    
+        if ($result) {
+            return header("Location: /p5-ocr/profil/{$id}?success=true");
             exit();
         } else {
             echo "Erreur lors de la modification";
         }
-    }    
+    }
 }
