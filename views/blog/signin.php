@@ -38,31 +38,26 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="my-5">
-                            <form id="contactForm" action="/p5-ocr/signin" method="POST">
-                                <div class="form-floating">
-                                    <input class="form-control" id="lastname" name ="lastname" type="text" placeholder="Entrer votre nom..." data-sb-validations="required" />
-                                    <label for="lastname">Nom</label>
-                                    <div class="invalid-feedback" data-sb-feedback="name:required">Votre nom est requis.</div>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" id="firstname" name ="firstname" type="text" placeholder="Entrer votre prénom..." data-sb-validations="required" />
-                                    <label for="firstname">Prénom</label>
-                                    <div class="invalid-feedback" data-sb-feedback="name:required">Votre prénom est requis.</div>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" id="email" name ="email" type="email" placeholder="Entrer votre adresse mail..." data-sb-validations="required,email" />
-                                    <label for="email">Adresse mail</label>
-                                    <div class="invalid-feedback" data-sb-feedback="email:required">Votre adresse mail est requis.</div>
-                                    <div class="invalid-feedback" data-sb-feedback="email:email">Votre adresse mail n'est pas valide.</div>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" id="password" name ="password" type="password" placeholder="Entrer votre mot de passe..." data-sb-validations="required" />
-                                    <label for="password">Mot de passe</label>
-                                    <div class="invalid-feedback" data-sb-feedback="name:required">Votre mot de passe est requis.</div>
-                                </div>
-                                <br />
-                                <button class="btn btn-primary" id="submitButton" type="submit">Se connecter</button>
-                            </form>
+                        <form id="contactForm" action="/p5-ocr/signin" method="POST">
+                            <div class="form-floating">
+                                <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Entrer votre nom..." required />
+                                <label for="lastname">Nom</label>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="firstname" name="firstname" type="text" placeholder="Entrer votre prénom..." required />
+                                <label for="firstname">Prénom</label>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="email" name="email" type="email" placeholder="Entrer votre adresse mail..." required />
+                                <label for="email">Adresse mail</label>
+                            </div>
+                            <div class="form-floating">
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Entrer votre mot de passe..." required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9\W]).{8,}$" title="Le mot de passe doit faire au minimum 8 caractères avec 1 majuscule, 1 minuscule, et un chiffre ou un caractère spécial." />
+                                <label for="password">Mot de passe</label>
+                            </div>
+                            <br />
+                            <button class="btn btn-primary" id="submitButton" type="submit">Se connecter</button>
+                        </form>
                             <p>Vous avez déjà un compte ? <a href="/P5-OCR/login">Cliquez ici</a> pour vous connecter</p>
                             </div>
                         </div>

@@ -43,15 +43,12 @@
                         <div class="my-5">
                             <form id="contactForm" action="/P5-OCR/login" method="POST">
                                 <div class="form-floating">
-                                    <input class="form-control" id="email" type="email" name="email" placeholder="Entrer votre adresse mail..." data-sb-validations="required,email" />
+                                    <input class="form-control" id="email" type="email" name="email" placeholder="Entrer votre adresse mail..." required />
                                     <label for="email">Adresse mail</label>
-                                    <div class="invalid-feedback" data-sb-feedback="email:required">Votre adresse mail est requis.</div>
-                                    <div class="invalid-feedback" data-sb-feedback="email:email">Votre adresse mail n'est pas valide.</div>
                                 </div>
                                 <div class="form-floating">
-                                    <input class="form-control" id="password" type="password" name="password" placeholder="Entrer votre mot de passe..." data-sb-validations="required" />
+                                    <input class="form-control" id="password" type="password" name="password" placeholder="Entrer votre mot de passe..." required />
                                     <label for="password">Mot de passe</label>
-                                    <div class="invalid-feedback" data-sb-feedback="password:required">Votre mot de passe est requis.</div>
                                 </div>
                                 <br />
                                 <button class="btn btn-primary" id="submitButton" type="submit">Se connecter</button>

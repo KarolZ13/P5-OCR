@@ -19,19 +19,19 @@
                         <form action="/p5-ocr/admin/post/add" method="POST" enctype="multipart/form-data">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="title">Titre de l'article :</label>
-                                <input type="text" class="form-control" name="title" id="title">
+                                <input type="text" class="form-control" name="title" id="title" required>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="chapo">Chapo :</label>
-                                <textarea name="chapo" id="chapo" rows ="5" class="form-control"></textarea>
+                                <textarea name="chapo" id="chapo" rows ="5" class="form-control" required></textarea>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="content">Contenu de l'article :</label>
-                                <textarea name="content" id="content" rows ="12" class="form-control"></textarea>
+                                <textarea name="content" id="content" rows ="12" class="form-control" required></textarea>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="picture">Ajouter une image à l'article :</label>
-                                <input type="file" name="picture" id="picture">
+                                <input type="file" name="picture" id="picture" required>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="id_categories">Catégorie de l'article :</label>

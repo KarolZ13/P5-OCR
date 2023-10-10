@@ -56,6 +56,21 @@ class UserController extends MainController {
         $email = $_POST['email'];
         $password = $_POST['password'];
     
+        // Valider que tous les champs sont remplis
+        if (empty($lastname) || empty($firstname) || empty($email) || empty($password)) {
+            return header('Location: /p5-ocr/signin?error=missing_fields');
+        }
+    
+        // Valider l'adresse e-mail
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strpos($email, '@') === false) {
+            return header('Location: /p5-ocr/signin?error=invalid_email');
+        }
+    
+        // Valider le mot de passe
+        if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9\W]/', $password)) {
+            return header('Location: /p5-ocr/signin?error=invalid_password');
+        }
+    
         $userModel = new User($this->getDB());
     
         $result = $userModel->addUser($lastname, $firstname, $email, $password);
@@ -65,11 +80,10 @@ class UserController extends MainController {
         } elseif ($result === -1) {
             return header('Location: /p5-ocr/signin?error=email_taken');
         } else {
-            return header ('Location: /p5-ocr/signin');
+            return header('Location: /p5-ocr/signin');
         }
     }
     
-
     /** Affiche la page d'inscription' */
     public function signIn()
     {

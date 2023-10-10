@@ -23,6 +23,10 @@
             padding-right: 15px;
             padding-left: 15px;
         }
+
+        .no_avatar {
+            margin-bottom: -35%;
+        }
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -40,13 +44,15 @@
                     <?php foreach ($params['users'] as $user): ?>
                         <div class="col-lg-3 col-md-5 col-12 my-3">
                             <div class="card h-100 bg-dark text-light box-glow-1 text-center">
-                                <a href="/p5-ocr/admin/user/<?= $user->id ?>">
                                 <?php if ($user->avatar !== null): ?>
-                                    <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $user->avatar ?>" alt="Card image cap">
+                                    <a href="/p5-ocr/admin/user/<?= $user->id ?>">
+                                        <img class="card-img-top" style="width: 100%; height: 100%;" src="<?= '/p5-ocr/public/assets/img/' . $user->avatar ?>" alt="Card image cap">
+                                    </a>
                                 <?php else: ?>
-                                    <img style="width: 276px; height:180px" src="/p5-ocr/public/assets/img/avatar-default.png" style="width: 100%; height: 100%;" alt="Avatar" />
+                                    <a class="no_avatar" href="/p5-ocr/admin/user/<?= $user->id ?>">
+                                        <img style="width: 100%; height:67%" src="/p5-ocr/public/assets/img/avatar-default.png" alt="Avatar" />
+                                    </a>
                                 <?php endif; ?>
-                                </a>
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $user->firstname . ' ' . $user->lastname ?></h5>
                                     <p class="card-text"><?= $user->email ?></p>

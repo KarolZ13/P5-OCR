@@ -10,6 +10,7 @@ class User extends DBConnection {
     protected $table = 'users';
     protected $db;
 
+
     public function __construct(DBConnection $db)
     {
         $this->db = $db;
@@ -39,7 +40,7 @@ class User extends DBConnection {
         }
     
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
+        $stmt = $this->db->getPDO()->prepare('INSERT INTO '.$this->table.' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
         $stmt->execute([$lastname, $firstname, $email, $hashedPassword]);
         return $stmt->rowCount();
     }

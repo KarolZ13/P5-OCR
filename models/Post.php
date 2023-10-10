@@ -5,7 +5,7 @@ namespace Models;
 use PDO;
 use Models\DBConnection;
 
-class Post extends DBConnection 
+class Post extends DBConnection
 {
     protected $table = 'posts';
     protected $db;

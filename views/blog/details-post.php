@@ -75,17 +75,14 @@
                                 <form id="contactForm" action="/p5-ocr/post/<?= $params['post']->id ?>" method="POST">
                                 <?php if (isset($_SESSION['auth'])): ?>
                                     <div class="form-floating">
-                                        <textarea class="form-control" id="comment" name="comment" type="text" placeholder="Ajouter votre commentaire..." style="height: 12rem" data-sb-validations="required"></textarea>
+                                        <textarea class="form-control" id="comment" name="comment" type="text" placeholder="Ajouter votre commentaire..." style="height: 12rem" required></textarea>
                                         <label for="comment">Ajouter un commentaire...</label>
                                     </div>
                                     <br />
-                                    <div class="d-none" id="submitErrorMessage">
-                                        <div class="text-center text-danger mb-3">Error sending message!</div>
-                                    </div>
                                     <button class="btn btn-primary" id="submitButton" type="submit">Envoyer</button>
                                 </form>
                                 <?php else: ?>
-                                    <strong><i>Vous devez être connecté pour ajouter un commentaire!</i></strong>
+                                    <strong><i>Vous devez être <a href="P5-OCR/login" style="color: blue;"> connecté </a>pour ajouter un commentaire!</i></strong>
                                 <?php endif ?>
                                 <div class="mt-5">
                                     <h3>Commentaires</h3>
