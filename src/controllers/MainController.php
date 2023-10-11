@@ -5,7 +5,7 @@ namespace src\controllers;
 use Models\DBConnection;
 use Models\User;
 
-class MainController 
+class MainController
 {
 
     protected $db;
@@ -22,25 +22,25 @@ class MainController
     /**Récupération de la vue utilisateur avec le layout */
     protected function view(string $path, array $params = null)
     {
-    ob_start();
-    $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
-    require VIEWS . $path . '.php';
-    $content = ob_get_clean();
-    require VIEWS . 'layout.php';
+        ob_start();
+        $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
+        require VIEWS . $path . '.php';
+        $content = ob_get_clean();
+        require VIEWS . 'layout.php';
     }
 
     /**Récupération de la vue administrateur avec le layout */
     protected function adminView(string $path, array $params = null)
     {
-    ob_start();
-    $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
-    require VIEWS . $path . '.php';
-    $content = ob_get_clean();
-    require VIEWS . 'layout-admin.php';
+        ob_start();
+        $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
+        require VIEWS . $path . '.php';
+        $content = ob_get_clean();
+        require VIEWS . 'layout-admin.php';
     }
 
     /**Récupération de la connexion à la BDD */
-    protected function getDB() 
+    protected function getDB()
     {
         return $this->db;
     }
@@ -54,7 +54,7 @@ class MainController
     /** Vérifie si l'utilisateur et administrateur */
     protected function isAdmin()
     {
-        if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin'] === 1 ) {
+        if (isset($_SESSION['auth']) && $_SESSION['auth']['is_admin'] === 1) {
             return true;
         } else {
             return header('Location: /p5-ocr/login');
@@ -65,7 +65,7 @@ class MainController
     public function homepageAdmin()
     {
         $this->isAdmin();
-        
+
         $user = new User($this->getDB());
         $users = $user->getUsers();
         $usersWithCommentCounts = $user->getUsersWithCommentCounts();
