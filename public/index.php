@@ -12,7 +12,7 @@ define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PWD', '');
 
-$router = new Router($_GET['url']); 
+$router = new Router($_GET['url']);
 
 $router->get('/', 'src\controllers\MainController@homepage');
 

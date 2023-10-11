@@ -5,7 +5,7 @@ namespace Models;
 use PDO;
 use Models\DBConnection;
 
-class Comment extends DBConnection 
+class Comment extends DBConnection
 {
     protected $table = 'comments';
     protected $db;
@@ -64,7 +64,7 @@ class Comment extends DBConnection
     /** Changement de status (activé/désactivé) pour un commentaire */
     public function toggleCommentStatus(int $commentId, int $newStatus)
     {
-        
+
         if ($newStatus == 0) {
             $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 1 WHERE id = :id");
         } else {

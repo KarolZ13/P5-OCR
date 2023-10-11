@@ -22,7 +22,8 @@ class Post extends DBConnection
     /** Récupère tous les articles **/
     public function getPosts(): array
     {
-        return $this->query("
+        return $this->query(
+            "
             SELECT 
                 posts.*,
                 users.firstname AS author_firstname,
@@ -37,14 +38,16 @@ class Post extends DBConnection
                 categories ON posts.id_categories = categories.id
             ORDER BY
                 posts.created_at DESC
-        ", null
+        ",
+            null
         );
     }
 
     /** Récupère un article selon l'id **/
     public function getPost(int $idPost)
     {
-        return $this->query("
+        return $this->query(
+            "
             SELECT 
                 posts.*,
                 users.firstname,
@@ -61,10 +64,12 @@ class Post extends DBConnection
                 categories ON posts.id_categories = categories.id
             WHERE 
                 posts.id = ?
-            ", $idPost, true
+            ",
+            $idPost,
+            true
         );
     }
-    
+
     /** Récupére les catégories **/
     public function getCategories()
     {
@@ -81,7 +86,7 @@ class Post extends DBConnection
     /** Changement de status d'un article (activé/désactivé) **/
     public function togglePostStatus(int $idPost, int $newStatus)
     {
-        
+
         if ($newStatus === 0) {
             $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 1 WHERE id = :id");
         } else {
@@ -108,9 +113,9 @@ class Post extends DBConnection
     public function updatePost(int $idPost, array $data)
     {
         $sql = "UPDATE posts SET title = :title, chapo = :chapo, content = :content, picture = :picture, id_categories = :id_categories WHERE id = :id";
-    
+
         $stmt = $this->db->getPDO()->prepare($sql);
-    
+
         $stmt->bindValue(':title', $data['title'], PDO::PARAM_STR);
         $stmt->bindValue(':chapo', $data['chapo'], PDO::PARAM_STR);
         $stmt->bindValue(':content', $data['content'], PDO::PARAM_STR);
@@ -119,7 +124,7 @@ class Post extends DBConnection
         $stmt->bindValue(':picture', $data['picture'], PDO::PARAM_STR);
         return $stmt->execute();
     }
-    
+
     /** Ajouter un article **/
     public function addPost(string $title, string $content, string $chapo, ?string $picture, int $status, int $userId, int $id_categories, string $createdAt)
     {

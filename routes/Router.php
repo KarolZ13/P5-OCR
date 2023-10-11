@@ -2,7 +2,8 @@
 
 namespace Router;
 
-class Router {
+class Router
+{
 
     public $url;
     public $routes = [];

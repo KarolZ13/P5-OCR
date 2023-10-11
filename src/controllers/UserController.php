@@ -22,7 +22,7 @@ class UserController extends MainController
     {
         $email = $_POST['email'];
         $user = (new User($this->getDB()))->getByEmail($email);
-    
+
         if (password_verify($_POST['password'], $user->password)) {
             $userData = [
                 'is_admin' => $user->is_admin,
@@ -31,9 +31,9 @@ class UserController extends MainController
                 'lastname' => $user->lastname,
                 'avatar' => $user->avatar,
             ];
-    
+
             $_SESSION['auth'] = $userData;
-    
+
             if ($_SESSION['auth']['is_admin']) {
                 return header('Location: /P5-OCR/admin?success=true');
             } else {
@@ -43,7 +43,7 @@ class UserController extends MainController
             return header('Location: /p5-ocr/login?error=true');
         }
     }
-    
+
     /** Déconnexion de l'utilisateur */
     public function logout()
     {
@@ -59,26 +59,26 @@ class UserController extends MainController
         $firstname = $_POST['firstname'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-    
+
         // Valider que tous les champs sont remplis
         if (empty($lastname) || empty($firstname) || empty($email) || empty($password)) {
             return header('Location: /p5-ocr/signin?error=missing_fields');
         }
-    
+
         // Valider l'adresse e-mail
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strpos($email, '@') === false) {
             return header('Location: /p5-ocr/signin?error=invalid_email');
         }
-    
+
         // Valider le mot de passe
         if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9\W]/', $password)) {
             return header('Location: /p5-ocr/signin?error=invalid_password');
         }
-    
+
         $userModel = new User($this->getDB());
-    
+
         $result = $userModel->addUser($lastname, $firstname, $email, $password);
-    
+
         if ($result === 1) {
             return header('Location: /p5-ocr/login?success=true');
         } elseif ($result === -1) {
@@ -87,18 +87,18 @@ class UserController extends MainController
             return header('Location: /p5-ocr/signin');
         }
     }
-    
+
     /** Affiche la page d'inscription' */
     public function signIn()
     {
-    return $this->view('blog.signin');
+        return $this->view('blog.signin');
     }
 
     /** Récupére les informations des utilisateurs pour la mettre dans la vue administrateur */
     public function getUsers()
     {
         $this->isAdmin();
-        
+
         $user = new User($this->getDB());
         $users = $user->getUsers();
 
@@ -111,7 +111,7 @@ class UserController extends MainController
     {
         $user = (new User($this->getDB()))->getUser($userId);
         $user = $user->getUser($userId);
-        
+
         return $this->view('blog.profil-edit', compact('user'));
     }
 
@@ -119,7 +119,7 @@ class UserController extends MainController
     public function toggleUser(int $userId)
     {
         $this->isAdmin();
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = new User($this->getDB());
             $currentIsEnable = $user->getUserStatus($userId);
@@ -141,47 +141,47 @@ class UserController extends MainController
 
         $user = (new User($this->getDB()))->getUser($userId);
         $user = $user->getUser($userId);
-        
+
         return $this->adminView('admin.user-edit', compact('user'));
     }
-    
+
     /** Récupération des informations mise à jour pour le profil d'un utilisateur dans l'espace administrateur */
     public function adminUpdateUserProfil(int $userId)
     {
         $this->isAdmin();
-    
+
         $userModel = (new User($this->getDB()))->getUser($userId);
         $userData = $_POST;
-    
+
         if (empty($userData['password'])) {
             unset($userData['password']);
         }
-    
+
         if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = '/p5-ocr/public/assets/img/';
             $newAvatarFileName = $_FILES['new_avatar']['name'];
             $uploadPath = $uploadDir . $newAvatarFileName;
-    
+
             if (!empty($userModel->avatar)) {
                 unlink($uploadDir . $userModel->avatar);
             }
-    
+
             move_uploaded_file($_FILES['new_avatar']['tmp_name'], $uploadPath);
             $userData['avatar'] = $newAvatarFileName;
         } else {
             $userData['avatar'] = $userModel->avatar;
         }
-    
+
         $result = $userModel->setUserProfil($userId, $userData);
-    
+
         if ($result) {
             return header("Location: /p5-ocr/admin/users?success=true");
         } else {
             echo "Erreur lors de la modification";
         }
     }
-    
-    
+
+
     /** Suppression d'un utilisateur dans l'espace administrateur */
     public function deleteUser(int $userId)
     {
@@ -225,28 +225,28 @@ class UserController extends MainController
 
         $userModel = (new User($this->getDB()))->getUser($userId);
         $userData = $_POST;
-    
+
         if (empty($userData['password'])) {
             unset($userData['password']);
         }
-    
+
         if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = '/p5-ocr/public/assets/img/';
             $newAvatarFileName = $_FILES['new_avatar']['name'];
             $uploadPath = $uploadDir . $newAvatarFileName;
-    
+
             if (!empty($userModel->avatar)) {
                 unlink($uploadDir . $userModel->avatar);
             }
-    
+
             move_uploaded_file($_FILES['new_avatar']['tmp_name'], $uploadPath);
             $userData['avatar'] = $newAvatarFileName;
         } else {
             $userData['avatar'] = $userModel->avatar;
         }
-    
+
         $result = $userModel->setUserProfil($userId, $userData);
-    
+
         if ($result) {
             return header("Location: /p5-ocr/profil/{$userId}?success=true");
         } else {

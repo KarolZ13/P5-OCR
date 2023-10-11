@@ -13,7 +13,7 @@ class Route
     public function __construct($path, $action)
     {
         $this->path = trim($path, '/');
-        $this->action = $action;           
+        $this->action = $action;
     }
 
     public function matches(string $url)
@@ -24,7 +24,7 @@ class Route
         if (preg_match($pathToMatch, $url, $matches)) {
             $this->matches = $matches;
             return true;
-        }   else {
+        } else {
             return false;
         }
     }
@@ -36,6 +36,6 @@ class Route
         $method = $params[1];
 
         return isset($this->matches[1]) ? $controller->$method($this->matches[1]) :
-        $controller->$method();
+            $controller->$method();
     }
 }

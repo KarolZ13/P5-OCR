@@ -5,7 +5,7 @@ namespace src\controllers;
 use Models\Post;
 use Models\Comment;
 
-class PostController extends MainController 
+class PostController extends MainController
 {
 
     /** Affiche les articles dans la vue utilisateur */
@@ -25,7 +25,7 @@ class PostController extends MainController
 
         $commentModel = new Comment($this->getDB());
         $comments = $commentModel->getCommentsByPostId($idPost);
-        
+
         return $this->view('blog.details-post', compact('post', 'comments'));
     }
 
@@ -36,28 +36,28 @@ class PostController extends MainController
     {
         $this->isAdmin();
         $postModel = (new Post($this->getDB()))->getPost($idPost);
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $_POST;
-    
+
             if (isset($_FILES['new_picture']) && $_FILES['new_picture']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = '/p5-ocr/public/assets/img/';
                 $originalFileName = $_FILES['new_picture']['name'];
                 $newFileName = uniqid() . '_' . $originalFileName;
-            
+
                 if (!empty($postModel->picture)) {
                     unlink($uploadDir . $postModel->picture);
                 }
-            
+
                 move_uploaded_file($_FILES['new_picture']['tmp_name'], $uploadDir . $newFileName);
-            
+
                 $data['picture'] = $originalFileName;
             } else {
                 $data['picture'] = $postModel->picture;
             }
-    
+
             $result = $postModel->updatePost($idPost, $data);
-    
+
             if ($result) {
                 return header("Location: /p5-ocr/admin/posts/edit/{$idPost}?success=true");
             } else {
@@ -71,7 +71,7 @@ class PostController extends MainController
     {
 
         $this->isAdmin();
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post = new Post($this->getDB());
 
@@ -79,7 +79,7 @@ class PostController extends MainController
             $comment = $comment->deleteCommentsForPost($idPost);
 
             $result = $post->deletePost($idPost);
-    
+
             if ($result) {
                 header('Location: /p5-ocr/admin/posts?delete_success=true');
             } else {
@@ -87,12 +87,12 @@ class PostController extends MainController
             }
         }
     }
-    
+
     /** Changement de status d'un article */
     public function togglePost(int $idPost)
     {
         $this->isAdmin();
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post = new Post($this->getDB());
             $currentStatus = $post->getPostStatus($idPost);
@@ -112,18 +112,18 @@ class PostController extends MainController
     public function showCommentsByPost()
     {
         $this->isAdmin();
-    
+
         $postModel = new Post($this->getDB());
-        $posts = $postModel->getPosts(); 
-    
+        $posts = $postModel->getPosts();
+
         $commentModel = new Comment($this->getDB());
         $commentsByPost = [];
-    
+
         foreach ($posts as $post) {
             $comments = $commentModel->getCommentsByPostId($post->id);
             $commentsByPost[$post->id] = $comments;
         }
-    
+
         return $this->adminView('admin.comments-admin', ['posts' => $posts, 'commentsByPost' => $commentsByPost]);
     }
 
@@ -141,14 +141,14 @@ class PostController extends MainController
     public function editPost(int $idPost)
     {
         $this->isAdmin();
-    
+
         $post = (new Post($this->getDB()))->getPost($idPost);
         $categories = (new Post($this->getDB()))->getCategories();
         $id_categories = $post->id_categories;
-    
+
         return $this->adminView('admin.post-edit', compact('post', 'categories', 'id_categories'));
     }
-    
+
 
     /** Récupération des données du formulaire pour la création d'un article */
     public function createPost()
@@ -160,26 +160,26 @@ class PostController extends MainController
             $status = 1;
             $idUser = $_SESSION['auth']['id'];
             $createdAt = date("Y/m/d");
-            $id_categories = (int)$_POST['id_categories'];
-            
-    
+            $id_categories = (int) $_POST['id_categories'];
+
+
             if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
                 $picture = $_FILES['picture']['name'];
-    
+
                 $uploadDir = '/p5-ocr/public/assets/img/';
                 $uploadPath = $uploadDir . $picture;
-    
+
                 move_uploaded_file($_FILES['picture']['tmp_name'], $uploadPath);
             } else {
                 $picture = null;
             }
-    
-            $idUser = (int)$idUser;
-    
+
+            $idUser = (int) $idUser;
+
             $postModel = new Post($this->getDB());
-    
+
             $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $id_categories, $createdAt);
-    
+
             if ($result === 1) {
                 return header("Location: /p5-ocr/admin/posts?create_success=true");
             } else {
@@ -187,7 +187,7 @@ class PostController extends MainController
             }
         }
     }
-    
+
     /** Affiche la vue pour l'ajout d'un article dans l'espace administrateur */
     public function addPostView()
     {

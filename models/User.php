@@ -5,7 +5,8 @@ namespace Models;
 use Models\DBConnection;
 use PDO;
 
-class User extends DBConnection {
+class User extends DBConnection
+{
 
     protected $table = 'users';
     protected $db;
@@ -34,13 +35,13 @@ class User extends DBConnection {
     public function addUser(string $lastname, string $firstname, string $email, string $password)
     {
         $existingUser = $this->getByEmail($email);
-        
+
         if ($existingUser) {
             return -1;
         }
-    
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->db->getPDO()->prepare('INSERT INTO '.$this->table.' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
+        $stmt = $this->db->getPDO()->prepare('INSERT INTO ' . $this->table . ' (lastname, firstname, email, password, is_admin, is_enable) VALUES (?, ?, ?, ?, 0, 1)');
         $stmt->execute([$lastname, $firstname, $email, $hashedPassword]);
         return $stmt->rowCount();
     }
@@ -72,7 +73,7 @@ class User extends DBConnection {
     /** Changement du status de l'utilisateur (activé/désactivé) */
     public function setUserStatus(int $userId, int $isEnable)
     {
-        
+
         if ($isEnable == 0) {
             $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_enable = 1 WHERE id = :id");
         } else {
@@ -98,26 +99,26 @@ class User extends DBConnection {
     public function setUserProfil(int $userId, array $data)
     {
         $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, avatar = :avatar";
-        
+
         if (!empty($data['password'])) {
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             $sql .= ", password = :password";
         }
-        
+
         $sql .= " WHERE id = :id";
-    
+
         $stmt = $this->db->getPDO()->prepare($sql);
-        
+
         $stmt->bindValue(':firstname', $data['firstname'], PDO::PARAM_STR);
         $stmt->bindValue(':lastname', $data['lastname'], PDO::PARAM_STR);
         $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
         $stmt->bindValue(':avatar', $data['avatar'], PDO::PARAM_STR);
         $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
-    
+
         if (!empty($data['password'])) {
             $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
         }
-    
+
         return $stmt->execute();
     }
 
@@ -126,13 +127,13 @@ class User extends DBConnection {
     {
         $this->db->getPDO()->beginTransaction();
 
-            $this->query("DELETE FROM comments WHERE id_user = ?", $userId);
+        $this->query("DELETE FROM comments WHERE id_user = ?", $userId);
 
-            $this->query("DELETE FROM users WHERE id = ?", $userId);
+        $this->query("DELETE FROM users WHERE id = ?", $userId);
 
-            $this->db->getPDO()->commit();
+        $this->db->getPDO()->commit();
 
-            return true;
+        return true;
     }
 
     /** Mettre le status d'un utilisateur en administrateur */

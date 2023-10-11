@@ -5,7 +5,7 @@ namespace src\controllers;
 use Models\Comment;
 use Models\Post;
 
-class CommentController extends MainController 
+class CommentController extends MainController
 {
 
     /** Récupération des informations pour l'ajout d'un commentaire par un utilisateur */
@@ -17,12 +17,12 @@ class CommentController extends MainController
             $isValid = 0;
             $userIdRaw = $_SESSION['auth']['id'];
 
-            $userID = (int)$userIdRaw;
-        
+            $userID = (int) $userIdRaw;
+
             $commentModel = new Comment($this->getDB());
-        
+
             $result = $commentModel->addComment($comment, $isValid, $userID, $postID, $createdAt);
-        
+
             if ($result === 1) {
                 return header("Location: /p5-ocr/post/{$postID}?success=true");
             } else {
@@ -39,15 +39,15 @@ class CommentController extends MainController
 
         $postModel = new Post($this->getDB());
         $posts = $postModel->getPosts();
-    
+
         $commentModel = new Comment($this->getDB());
         $commentsByPost = [];
-    
+
         foreach ($posts as $post) {
             $comments = $commentModel->getCommentsByPostId($post->id);
             $commentsByPost[$post->id] = $comments;
         }
-    
+
         return $this->adminView('admin.comments-admin', compact('posts', 'commentsByPost'));
     }
 
@@ -55,7 +55,7 @@ class CommentController extends MainController
     public function toggleComment(int $commentId)
     {
         $this->isAdmin();
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $comment = new Comment($this->getDB());
             $currentStatus = $comment->getCommentStatus($commentId);
@@ -75,13 +75,13 @@ class CommentController extends MainController
     {
 
         $this->isAdmin();
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $comment = new Comment($this->getDB());
             $result = $comment->deleteComment($commentId);
-            
-    
+
+
             if ($result) {
                 header('Location: /p5-ocr/admin/comments?delete_success=true');
             } else {

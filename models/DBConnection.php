@@ -10,13 +10,13 @@ class DBConnection
     private $dbname;
 
     private $host;
-    
+
     private $username;
-    
+
     private $password;
-    
+
     private $pdo;
-    
+
     protected $db;
 
 
@@ -26,7 +26,7 @@ class DBConnection
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
-        
+
     }
 
     /** Connexion à la BDD **/
@@ -58,7 +58,7 @@ class DBConnection
         if ($method === 'query') {
             return $stmt->$fetch();
         }
-            $stmt->execute([$param]);
-            return $stmt->$fetch();
-        }
+        $stmt->execute([$param]);
+        return $stmt->$fetch();
+    }
 }
