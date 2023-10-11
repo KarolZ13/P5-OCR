@@ -6,12 +6,19 @@ use PDO;
 
 class DBConnection
 {
+
     private $dbname;
+
     private $host;
+    
     private $username;
+    
     private $password;
+    
     private $pdo;
+    
     protected $db;
+
 
     public function __construct(string $dbname, string $host, string $username, string $password)
     {
@@ -19,6 +26,7 @@ class DBConnection
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
+        
     }
 
     /** Connexion à la BDD **/
@@ -49,9 +57,8 @@ class DBConnection
 
         if ($method === 'query') {
             return $stmt->$fetch();
-        }   else {
+        }
             $stmt->execute([$param]);
             return $stmt->$fetch();
         }
-    }
 }

@@ -82,7 +82,7 @@
                                     <button class="btn btn-primary" id="submitButton" type="submit">Envoyer</button>
                                 </form>
                                 <?php else: ?>
-                                    <strong><i>Vous devez être <a href="P5-OCR/login" style="color: blue;"> connecté </a>pour ajouter un commentaire!</i></strong>
+                                    <strong><i>Vous devez être <a href="/P5-OCR/login" style="color: blue;"> connecté </a>pour ajouter un commentaire!</i></strong>
                                 <?php endif ?>
                                 <div class="mt-5">
                                     <h3>Commentaires</h3>

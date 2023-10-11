@@ -52,15 +52,15 @@ class CommentController extends MainController
     }
 
     /** Changement de status d'un commentaire */
-    public function toggleComment(int $id)
+    public function toggleComment(int $commentId)
     {
         $this->isAdmin();
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $comment = new Comment($this->getDB());
-            $currentStatus = $comment->getCommentStatus($id);
+            $currentStatus = $comment->getCommentStatus($commentId);
             $newStatus = $currentStatus;
-            $result = $comment->toggleCommentStatus($id, $newStatus);
+            $result = $comment->toggleCommentStatus($commentId, $newStatus);
 
             if ($result) {
                 header('Location: /p5-ocr/admin/comments?success=true');
@@ -71,7 +71,7 @@ class CommentController extends MainController
     }
 
     /** Suppression d'un commentaire */
-    public function deleteComment(int $id)
+    public function deleteComment(int $commentId)
     {
 
         $this->isAdmin();
@@ -79,11 +79,11 @@ class CommentController extends MainController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $comment = new Comment($this->getDB());
-            $result = $comment->deleteComment($id);
+            $result = $comment->deleteComment($commentId);
             
     
             if ($result) {
-                header('Location: /p5-ocr/admin/comments?success=true');
+                header('Location: /p5-ocr/admin/comments?delete_success=true');
             } else {
                 header('Location: /p5-ocr/admin/comments?error=true');
             }

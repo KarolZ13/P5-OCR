@@ -32,6 +32,12 @@
     <body class="sb-nav-fixed">
         <header>
             <div class="container-fluid px-4">
+                <?php if (isset($_GET['delete_success'])): ?>
+                    <div class="alert alert-success" style="margin-top: 1rem">L'utilisateur a été supprimé!</div>
+                <?php endif ?>
+                <?php if (isset($_GET['success'])): ?>
+                    <div class="alert alert-success" style="margin-top: 1rem">Les modifications ont été apporté sur l'utilisateur!</div>
+                <?php endif ?>
                 <h1 class="mt-4">Administration des utilisateurs</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Gérer les utilisateurs</li>

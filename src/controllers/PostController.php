@@ -18,13 +18,13 @@ class PostController extends MainController
     }
 
     /** Affiche les détails d'un article et ses commentaires selon son id */
-    public function show(int $id)
+    public function show(int $idPost)
     {
         $post = new Post($this->getDB());
-        $post = $post->getPost($id);
+        $post = $post->getPost($idPost);
 
         $commentModel = new Comment($this->getDB());
-        $comments = $commentModel->getCommentsByPostId($id);
+        $comments = $commentModel->getCommentsByPostId($idPost);
         
         return $this->view('blog.details-post', compact('post', 'comments'));
     }
@@ -32,10 +32,10 @@ class PostController extends MainController
 
 
     /** Mise à jour des informations d'un article sélectionné dans la vue Admin */
-    public function updatePost(int $id)
+    public function updatePost(int $idPost)
     {
         $this->isAdmin();
-        $postModel = (new Post($this->getDB()))->getPost($id);
+        $postModel = (new Post($this->getDB()))->getPost($idPost);
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $_POST;
@@ -56,10 +56,10 @@ class PostController extends MainController
                 $data['picture'] = $postModel->picture;
             }
     
-            $result = $postModel->updatePost($id, $data);
+            $result = $postModel->updatePost($idPost, $data);
     
             if ($result) {
-                return header("Location: /p5-ocr/admin/posts/edit/{$id}?success=true");
+                return header("Location: /p5-ocr/admin/posts/edit/{$idPost}?success=true");
             } else {
                 echo "Erreur lors de la modification";
             }
@@ -67,7 +67,7 @@ class PostController extends MainController
     }
 
     /** Suppression des informations d'un article sélectionné dans la vue administrateur */
-    public function deletePost(int $id)
+    public function deletePost(int $idPost)
     {
 
         $this->isAdmin();
@@ -76,12 +76,12 @@ class PostController extends MainController
             $post = new Post($this->getDB());
 
             $comment = new Comment($this->getDB());
-            $comment = $comment->deleteCommentsForPost($id);
+            $comment = $comment->deleteCommentsForPost($idPost);
 
-            $result = $post->deletePost($id);
+            $result = $post->deletePost($idPost);
     
             if ($result) {
-                header('Location: /p5-ocr/admin/posts?success=true');
+                header('Location: /p5-ocr/admin/posts?delete_success=true');
             } else {
                 header('Location: /p5-ocr/admin/posts?error=true');
             }
@@ -89,15 +89,15 @@ class PostController extends MainController
     }
     
     /** Changement de status d'un article */
-    public function togglePost(int $id)
+    public function togglePost(int $idPost)
     {
         $this->isAdmin();
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post = new Post($this->getDB());
-            $currentStatus = $post->getPostStatus($id);
+            $currentStatus = $post->getPostStatus($idPost);
             $newStatus = $currentStatus;
-            $result = $post->togglePostStatus($id, $newStatus);
+            $result = $post->togglePostStatus($idPost, $newStatus);
 
             if ($result) {
                 header('Location: /p5-ocr/admin/posts?success=true');
@@ -138,11 +138,11 @@ class PostController extends MainController
     }
 
     /** Affiche les détails d'un article dans la vue administrateur selon son id pour modification */
-    public function editPost(int $id)
+    public function editPost(int $idPost)
     {
         $this->isAdmin();
     
-        $post = (new Post($this->getDB()))->getPost($id);
+        $post = (new Post($this->getDB()))->getPost($idPost);
         $categories = (new Post($this->getDB()))->getCategories();
         $id_categories = $post->id_categories;
     
@@ -181,7 +181,7 @@ class PostController extends MainController
             $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $id_categories, $createdAt);
     
             if ($result === 1) {
-                return header("Location: /p5-ocr/admin/posts");
+                return header("Location: /p5-ocr/admin/posts?create_success=true");
             } else {
                 return header("Location: /p5-ocr/admin/posts");
             }

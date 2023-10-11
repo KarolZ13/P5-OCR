@@ -14,6 +14,9 @@
         <?php if (isset($_GET['success'])): ?>
             <div class="alert alert-success" style="margin-top: 1rem">Les modifications ont été apporté sur le commentaire!</div>
         <?php endif ?>
+        <?php if (isset($_GET['delete_success'])): ?>
+            <div class="alert alert-success" style="margin-top: 1rem">Le commentaire a été supprimé!</div>
+        <?php endif ?>
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>

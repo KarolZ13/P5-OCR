@@ -7,13 +7,17 @@ use Models\DBConnection;
 
 class Post extends DBConnection
 {
+
     protected $table = 'posts';
     protected $db;
+
 
     public function __construct(DBConnection $db)
     {
         $this->db = $db;
+
     }
+
 
     /** Récupère tous les articles **/
     public function getPosts(): array
@@ -33,11 +37,12 @@ class Post extends DBConnection
                 categories ON posts.id_categories = categories.id
             ORDER BY
                 posts.created_at DESC
-        ", null);
+        ", null
+        );
     }
 
     /** Récupère un article selon l'id **/
-    public function getPost(int $id)
+    public function getPost(int $idPost)
     {
         return $this->query("
             SELECT 
@@ -56,7 +61,8 @@ class Post extends DBConnection
                 categories ON posts.id_categories = categories.id
             WHERE 
                 posts.id = ?
-            ", $id, true);
+            ", $idPost, true
+        );
     }
     
     /** Récupére les catégories **/
@@ -66,31 +72,31 @@ class Post extends DBConnection
     }
 
     /** Supression d'un article selon l'id **/
-    public function deletePost(int $id): bool
+    public function deletePost(int $idPost): bool
     {
-        return $this->query("DELETE FROM posts WHERE id = ?", $id);
+        return $this->query("DELETE FROM posts WHERE id = ?", $idPost);
     }
 
 
     /** Changement de status d'un article (activé/désactivé) **/
-    public function togglePostStatus(int $id, int $newStatus)
+    public function togglePostStatus(int $idPost, int $newStatus)
     {
         
-        if ($newStatus == 0) {
+        if ($newStatus === 0) {
             $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 1 WHERE id = :id");
         } else {
             $stmt = $this->db->getPDO()->prepare("UPDATE posts SET status = 0 WHERE id = :id");
         }
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $idPost, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
     /** Récupére le status de chaque articles **/
-    public function getPostStatus(int $id)
+    public function getPostStatus(int $idPost)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT status FROM posts WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $idPost, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -99,7 +105,7 @@ class Post extends DBConnection
 
 
     /** Mise à jour d'un article selon son id **/
-    public function updatePost(int $id, array $data)
+    public function updatePost(int $idPost, array $data)
     {
         $sql = "UPDATE posts SET title = :title, chapo = :chapo, content = :content, picture = :picture, id_categories = :id_categories WHERE id = :id";
     
@@ -109,7 +115,7 @@ class Post extends DBConnection
         $stmt->bindValue(':chapo', $data['chapo'], PDO::PARAM_STR);
         $stmt->bindValue(':content', $data['content'], PDO::PARAM_STR);
         $stmt->bindValue(':id_categories', $data['id_categories'], PDO::PARAM_INT);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $idPost, PDO::PARAM_INT);
         $stmt->bindValue(':picture', $data['picture'], PDO::PARAM_STR);
         return $stmt->execute();
     }

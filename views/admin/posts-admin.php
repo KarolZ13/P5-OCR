@@ -49,6 +49,12 @@
                 <?php if (isset($_GET['success'])): ?>
                     <div class="alert alert-success" style="margin-top: 1rem">Les modifications ont été apporté sur l'article!</div>
                 <?php endif ?>
+                <?php if (isset($_GET['create_success'])): ?>
+                    <div class="alert alert-success" style="margin-top: 1rem">L'article a été créé!</div>
+                <?php endif ?>
+                <?php if (isset($_GET['delete_success'])): ?>
+                    <div class="alert alert-success" style="margin-top: 1rem">L'article a été supprimé!</div>
+                <?php endif ?>
                 <h1 class="mt-4">Administration des articles </h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Gérer les articles</li>

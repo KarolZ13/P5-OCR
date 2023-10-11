@@ -4,7 +4,7 @@ namespace Router;
 
 use Models\DBConnection;
 
-class Route 
+class Route
 {
     public $path;
     public $action;

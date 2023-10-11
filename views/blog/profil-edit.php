@@ -49,15 +49,15 @@
                         <form action="/p5-ocr/profil/<?= $params['user']->id ?>" method="POST" enctype="multipart/form-data">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="firstname">Prénom :</label>
-                                <input type="text" class="form-control" name="firstname" id="firstname" value="<?= $params['user']->firstname ?>">
+                                <input type="text" class="form-control" name="firstname" id="firstname" value="<?= $params['user']->firstname ?>" required>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="lastname">Nom :</label>
-                                <input type="text" class="form-control" name="lastname" id="lastname" value="<?= $params['user']->lastname ?>">
+                                <input type="text" class="form-control" name="lastname" id="lastname" value="<?= $params['user']->lastname ?>" required>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="email">Adresse mail :</label>
-                                <input type="text" class="form-control" name="email" id="email" value="<?= $params['user']->email ?>">
+                                <input type="text" class="form-control" name="email" id="email" value="<?= $params['user']->email ?>" required>
                             </div>
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="password">Mot de passe :</label>

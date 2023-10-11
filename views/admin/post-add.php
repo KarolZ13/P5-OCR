@@ -6,9 +6,6 @@
     <body class="sb-nav-fixed">
         <header>
             <div class="container-fluid px-4; justify-content-center">
-                <?php if (isset($_GET['successcreate'])): ?>
-                    <div class="alert alert-success" style="margin-top: 1rem">L'article a été créé'!</div>
-                <?php endif ?>
                 <h1 class="mt-4;" style="display:flex; justify-content:center">Création d'un article</h1>
             </div>
         </header>

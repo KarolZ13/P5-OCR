@@ -16,7 +16,7 @@ $router = new Router($_GET['url']);
 
 $router->get('/', 'src\controllers\MainController@homepage');
 
-/** Route User */
+/* Route User */
 $router->get('/', 'src\controllers\UserController@loginPost');
 $router->get('/signin', 'src\controllers\UserController@signIn');
 $router->post('/signin', 'src\controllers\UserController@signInPost');
@@ -32,7 +32,7 @@ $router->post('/admin/user/status/:id', 'src\controllers\UserController@toggleUs
 $router->post('/admin/user/delete/:id', 'src\controllers\UserController@deleteUser');
 $router->post('/admin/user/admin/:id', 'src\controllers\UserController@setUserAdmin');
 
-/** Route Post */
+/* Route Post */
 $router->get('/posts', 'src\controllers\PostController@posts');
 $router->get('/post/:id', 'src\controllers\PostController@show');
 $router->get('/admin', 'src\controllers\PostController@homepageAdmin');
@@ -45,7 +45,7 @@ $router->get('/admin/comments', 'src\controllers\PostController@showCommentsByPo
 $router->get('/admin/post/add', 'src\controllers\PostController@addPostView');
 $router->post('/admin/post/add', 'src\controllers\PostController@createPost');
 
-/** Route Comment */
+/* Route Comment */
 $router->post('/admin/comment/status/:id', 'src\controllers\CommentController@toggleComment');
 $router->post('/admin/comment/delete/:id', 'src\controllers\CommentController@deleteComment');
 $router->post('/post/:id', 'src\controllers\CommentController@commentPost');

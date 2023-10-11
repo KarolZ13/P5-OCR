@@ -25,9 +25,9 @@ class User extends DBConnection {
         return $stmt->fetch();
     }
 
-    public function getUser(int $id)
+    public function getUser(int $userId)
     {
-        return $this->query("SELECT * FROM {$this->table} WHERE id = ?", $id, true);
+        return $this->query("SELECT * FROM {$this->table} WHERE id = ?", $userId, true);
     }
 
     /** Ajoute un utilisateur en BDD */
@@ -70,7 +70,7 @@ class User extends DBConnection {
     }
 
     /** Changement du status de l'utilisateur (activé/désactivé) */
-    public function setUserStatus(int $id, int $isEnable)
+    public function setUserStatus(int $userId, int $isEnable)
     {
         
         if ($isEnable == 0) {
@@ -79,15 +79,15 @@ class User extends DBConnection {
             $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_enable = 0 WHERE id = :id");
         }
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
     /** Récupération du status d'un utilisateur */
-    public function getUserStatus(int $id)
+    public function getUserStatus(int $userId)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT is_enable FROM users WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -95,7 +95,7 @@ class User extends DBConnection {
     }
 
     /** Modification du profil d'un utilisateur */
-    public function setUserProfil(int $id, array $data)
+    public function setUserProfil(int $userId, array $data)
     {
         $sql = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, avatar = :avatar";
         
@@ -112,7 +112,7 @@ class User extends DBConnection {
         $stmt->bindValue(':lastname', $data['lastname'], PDO::PARAM_STR);
         $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
         $stmt->bindValue(':avatar', $data['avatar'], PDO::PARAM_STR);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
     
         if (!empty($data['password'])) {
             $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
@@ -136,11 +136,11 @@ class User extends DBConnection {
     }
 
     /** Mettre le status d'un utilisateur en administrateur */
-    public function setUserAdmin(int $id)
+    public function setUserAdmin(int $userId)
     {
         $stmt = $this->db->getPDO()->prepare("UPDATE users SET is_admin = 1 WHERE id = :id");
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }

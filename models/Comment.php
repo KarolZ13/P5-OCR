@@ -62,7 +62,7 @@ class Comment extends DBConnection
     }
 
     /** Changement de status (activé/désactivé) pour un commentaire */
-    public function toggleCommentStatus(int $id, int $newStatus)
+    public function toggleCommentStatus(int $commentId, int $newStatus)
     {
         
         if ($newStatus == 0) {
@@ -71,15 +71,15 @@ class Comment extends DBConnection
             $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 0 WHERE id = :id");
         }
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $commentId, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
     /** Récupération du status du commentaire (activé/désactivé) */
-    public function getCommentStatus(int $id)
+    public function getCommentStatus(int $commentId)
     {
         $stmt = $this->db->getPDO()->prepare("SELECT is_valid FROM comments WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $commentId, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -87,8 +87,8 @@ class Comment extends DBConnection
     }
 
     /** Suppression d'un commentaire */
-    public function deleteComment(int $id)
+    public function deleteComment(int $commentId)
     {
-        return $this->query("DELETE FROM comments WHERE id = ?", $id);
+        return $this->query("DELETE FROM comments WHERE id = ?", $commentId);
     }
 }
