@@ -7,6 +7,7 @@ class Router
 
     public $url;
     public $routes = [];
+    public $matchFound = false;
 
     public function __construct($url)
     {
@@ -27,9 +28,12 @@ class Router
     {
         foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->matches($this->url)) {
+                $this->matchFound = true; // Une route a été trouvée
                 return $route->execute();
             }
         }
-        return header('HTTP/1.0 404 Not Found');
+        if (!$this->matchFound) {
+            return header('HTTP/1.0 404 Not Found');
+        }
     }
 }

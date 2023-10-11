@@ -51,3 +51,7 @@ $router->post('/admin/comment/delete/:id', 'src\controllers\CommentController@de
 $router->post('/post/:id', 'src\controllers\CommentController@commentPost');
 
 $router->run();
+
+if (!$router->matchFound) {
+    include VIEWS . '404.php';
+}
