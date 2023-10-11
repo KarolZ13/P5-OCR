@@ -34,7 +34,7 @@ de donnée fournie avec votre serveur local (phpmyadmin...).
 - Se connecter au SGBD corréspondant à votre serveur local.
 - Ouvrir la database "p5_ocr-".
 - Aller au niveau de la table "users".
-- Modifier les champs "firstname", "lastname", "email", "password", is_admin = 1, is_enable = 1.
+- Ajouter un ligne en remplissant les champs "firstname", "lastname", "email", "password", is_admin = 1, is_enable = 1.
 - Bien hasher le mot de passe avant d'enregistrer, ici : https://phppasswordhash.com/.
 
 #### Paramétrage du formulaire de contact
