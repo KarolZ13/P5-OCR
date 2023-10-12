@@ -53,8 +53,7 @@
                                 <br />
                                 <button class="btn btn-primary" id="submitButton" type="submit">Se connecter</button>
                             </form>
-                            <p>Mot de passe oublié ? <a href="LoginView.php">Cliquez ici</a> pour réinitialiser votre mot de passe</p>
-                            </div>
+                            <p>Vous n'avez pas de compte ? <a href="/P5-OCR/signin">Cliquez ici</a> pour vous connecter</p>
                         </div>
                     </div>
                 </div>
