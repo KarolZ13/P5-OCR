@@ -38,6 +38,9 @@ de donnée fournie avec votre serveur local (phpmyadmin...).
 - Bien hasher le mot de passe avant d'enregistrer, ici : https://phppasswordhash.com/.
 
 #### Paramétrage du formulaire de contact
+Executer cette commande pour mettre en place le système d'envoi de mail: 
+- composer require phpmailer/phpmailer
+
 Changer les differentes informations concernant l'envoi de mail : /src/controllers/Mail.php
 
 - $mail->isSMTP();
