@@ -22,7 +22,7 @@ class UserController extends MainController
     {
         $email = $_POST['email'];
         $user = (new User($this->getDB()))->getByEmail($email);
-
+    
         if (password_verify($_POST['password'], $user->password)) {
             $userData = [
                 'is_admin' => $user->is_admin,
@@ -31,17 +31,17 @@ class UserController extends MainController
                 'lastname' => $user->lastname,
                 'avatar' => $user->avatar,
             ];
-
+    
             $_SESSION['auth'] = $userData;
-
+    
             if ($_SESSION['auth']['is_admin']) {
-                return header('Location: /P5-OCR/admin?success=true');
-            } else {
-                return header('Location: /p5-ocr?success=true');
+                return $this->redirectWithMessage("/P5-OCR/admin", "success=true");
             }
-        } else {
-            return header('Location: /p5-ocr/login?error=true');
+    
+            return $this->redirectWithMessage("/p5-ocr", "success=true");
         }
+    
+        return $this->redirectWithMessage("/p5-ocr/login", "error=true");
     }
 
     /** Déconnexion de l'utilisateur */
@@ -49,7 +49,7 @@ class UserController extends MainController
     {
         session_destroy();
 
-        return header('Location: /p5-ocr/');
+        return $this->redirectWithMessage("/p5-ocr/", "");
     }
 
     /** Récupére les informations d'inscription pour ajouter un utilisateur */
@@ -59,33 +59,48 @@ class UserController extends MainController
         $firstname = $_POST['firstname'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-
-        // Valider que tous les champs sont remplis
-        if (empty($lastname) || empty($firstname) || empty($email) || empty($password)) {
-            return header('Location: /p5-ocr/signin?error=missing_fields');
+    
+        if (!$this->validateInput($lastname, $firstname, $email, $password)) {
+            return $this->redirectWithMessage("/p5-ocr/signin", "error=missing_fields");
         }
-
-        // Valider l'adresse e-mail
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strpos($email, '@') === false) {
-            return header('Location: /p5-ocr/signin?error=invalid_email');
+    
+        if (!$this->validateEmail($email)) {
+            return $this->redirectWithMessage("/p5-ocr/signin", "error=invalid_email");
         }
-
-        // Valider le mot de passe
-        if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9\W]/', $password)) {
-            return header('Location: /p5-ocr/signin?error=invalid_password');
+    
+        if (!$this->validatePassword($password)) {
+            return $this->redirectWithMessage("/p5-ocr/signin", "error=invalid_password");
         }
-
+    
         $userModel = new User($this->getDB());
-
+    
         $result = $userModel->addUser($lastname, $firstname, $email, $password);
-
+    
         if ($result === 1) {
-            return header('Location: /p5-ocr/login?success=true');
+            return $this->redirectWithMessage("/p5-ocr/login", "success=true");
         } elseif ($result === -1) {
-            return header('Location: /p5-ocr/signin?error=email_taken');
+            return $this->redirectWithMessage("/p5-ocr/signin", "error=email_taken");
         } else {
-            return header('Location: /p5-ocr/signin');
+            return $this->redirectWithMessage("/p5-ocr/signin", "");
         }
+    }
+    
+    private function validateInput($lastname, $firstname, $email, $password)
+    {
+        return !empty($lastname) && !empty($firstname) && !empty($email) && !empty($password);
+    }
+    
+    private function validateEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) && strpos($email, '@') !== false;
+    }
+    
+    private function validatePassword($password)
+    {
+        return strlen($password) >= 8 &&
+            preg_match('/[A-Z]/', $password) &&
+            preg_match('/[a-z]/', $password) &&
+            preg_match('/[0-9\W]/', $password);
     }
 
     /** Affiche la page d'inscription' */
@@ -127,9 +142,9 @@ class UserController extends MainController
             $result = $user->setUserStatus($userId, $isEnable);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/users?success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "success=true");
             } else {
-                header('Location: /p5-ocr/admin/users?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "error=true");
             }
         }
     }
@@ -175,7 +190,7 @@ class UserController extends MainController
         $result = $userModel->setUserProfil($userId, $userData);
 
         if ($result) {
-            return header("Location: /p5-ocr/admin/users?success=true");
+            return $this->redirectWithMessage("/p5-ocr/admin/users", "success=true");
         } else {
             echo "Erreur lors de la modification";
         }
@@ -192,9 +207,9 @@ class UserController extends MainController
             $result = $userModel->deleteUserAndComments($userId);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/users?delete_success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "delete_success=true");
             } else {
-                header('Location: /p5-ocr/admin/users?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "error=true");
             }
         }
     }
@@ -209,9 +224,9 @@ class UserController extends MainController
             $result = $userModel->setUserAdmin($userId);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/users?success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "success=true");
             } else {
-                header('Location: /p5-ocr/admin/users?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/users", "error=true");
             }
         }
     }
@@ -220,7 +235,7 @@ class UserController extends MainController
     public function updateUserProfil(int $userId)
     {
         if (!$userId) {
-            return header("Location: /p5-ocr/error");
+            return $this->redirectWithMessage("/p5-ocr/", "error=true");
         }
 
         $userModel = (new User($this->getDB()))->getUser($userId);
@@ -248,7 +263,7 @@ class UserController extends MainController
         $result = $userModel->setUserProfil($userId, $userData);
 
         if ($result) {
-            return header("Location: /p5-ocr/profil/{$userId}?success=true");
+            return $this->redirectWithMessage("/p5-ocr/profil/{$userId}", "success=true");
         } else {
             echo "Erreur lors de la modification";
         }

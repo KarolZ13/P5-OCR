@@ -73,4 +73,10 @@ class MainController
 
         return $this->adminView('admin.homepage-admin', compact('users', 'usersWithCommentCounts', 'usersWithPostCounts'));
     }
+
+    public function redirectWithMessage($url, $message)
+    {
+        header("Location: $url?$message");
+        exit;
+    }
 }

@@ -36,33 +36,33 @@ class PostController extends MainController
     {
         $this->isAdmin();
         $postModel = (new Post($this->getDB()))->getPost($idPost);
-
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $_POST;
-
+    
             if (isset($_FILES['new_picture']) && $_FILES['new_picture']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = '/p5-ocr/public/assets/img/';
                 $originalFileName = $_FILES['new_picture']['name'];
                 $newFileName = uniqid() . '_' . $originalFileName;
-
+    
                 if (!empty($postModel->picture)) {
                     unlink($uploadDir . $postModel->picture);
                 }
-
+    
                 move_uploaded_file($_FILES['new_picture']['tmp_name'], $uploadDir . $newFileName);
-
+    
                 $data['picture'] = $originalFileName;
             } else {
                 $data['picture'] = $postModel->picture;
             }
-
+    
             $result = $postModel->updatePost($idPost, $data);
-
+    
             if ($result) {
-                return header("Location: /p5-ocr/admin/posts/edit/{$idPost}?success=true");
-            } else {
-                echo "Erreur lors de la modification";
+                return $this->redirectWithMessage("/p5-ocr/admin/posts/edit/{$idPost}", "success=true");
             }
+    
+            echo "Erreur lors de la modification";
         }
     }
 
@@ -81,9 +81,9 @@ class PostController extends MainController
             $result = $post->deletePost($idPost);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/posts?delete_success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/posts", "delete_success=true");
             } else {
-                header('Location: /p5-ocr/admin/posts?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/posts", "error=true");
             }
         }
     }
@@ -100,9 +100,9 @@ class PostController extends MainController
             $result = $post->togglePostStatus($idPost, $newStatus);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/posts?success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/posts", "success=true");
             } else {
-                header('Location: /p5-ocr/admin/posts?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/posts", "error=true");
             }
         }
     }
@@ -181,9 +181,9 @@ class PostController extends MainController
             $result = $postModel->addPost($title, $content, $chapo, $picture, $status, $idUser, $id_categories, $createdAt);
 
             if ($result === 1) {
-                return header("Location: /p5-ocr/admin/posts?create_success=true");
+                return $this->redirectWithMessage("/p5-ocr/admin/posts", "create_success=true");
             } else {
-                return header("Location: /p5-ocr/admin/posts");
+                return $this->redirectWithMessage("/p5-ocr/admin/posts", "error=true");
             }
         }
     }

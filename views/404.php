@@ -71,7 +71,7 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-10" style="display:flex; justify-content: center; flex-direction: column">
                         <img src="/P5-OCR/public/assets/img/404notfound.png" alt="">
-                        <p style="justify-content: center;display: flex;"><a href="/" style=" text-decoration: none; color:#3c52a5">Cliquer  ici  pour revenir sur la page d'accueil</a></p>
+                        <p style="justify-content: center;display: flex;"><a href="/P5-OCR/" style=" text-decoration: none; color:#3c52a5">Cliquer  ici  pour revenir sur la page d'accueil</a></p>
                     </div>
                 </div>
             </div>

@@ -16,20 +16,21 @@ class CommentController extends MainController
             $createdAt = date("Y-m-d");
             $isValid = 0;
             $userIdRaw = $_SESSION['auth']['id'];
-
             $userID = (int) $userIdRaw;
-
+    
             $commentModel = new Comment($this->getDB());
-
+    
             $result = $commentModel->addComment($comment, $isValid, $userID, $postID, $createdAt);
-
+    
             if ($result === 1) {
-                return header("Location: /p5-ocr/post/{$postID}?success=true");
+                $this->redirectWithMessage("/p5-ocr/post/{$postID}", "success=true");
             } else {
-                return header("Location: /p5-ocr/post/{$postID}?error=true");
+                $this->redirectWithMessage("/p5-ocr/post/{$postID}", "error=true");
             }
         }
     }
+    
+
 
     /** Montre les informations des commentaires selon un post dans la vue Admin/Comments */
     public function showCommentsByPost()
@@ -63,9 +64,9 @@ class CommentController extends MainController
             $result = $comment->toggleCommentStatus($commentId, $newStatus);
 
             if ($result) {
-                header('Location: /p5-ocr/admin/comments?success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/comments", "success=true");
             } else {
-                header('Location: /p5-ocr/admin/comments?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/comments", "error=true");
             }
         }
     }
@@ -83,9 +84,9 @@ class CommentController extends MainController
 
 
             if ($result) {
-                header('Location: /p5-ocr/admin/comments?delete_success=true');
+                $this->redirectWithMessage("/p5-ocr/admin/comments", "delete_success=true");
             } else {
-                header('Location: /p5-ocr/admin/comments?error=true');
+                $this->redirectWithMessage("/p5-ocr/admin/comments", "error=true");
             }
         }
     }

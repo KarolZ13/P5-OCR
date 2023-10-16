@@ -64,14 +64,12 @@ class Comment extends DBConnection
     /** Changement de status (activé/désactivé) pour un commentaire */
     public function toggleCommentStatus(int $commentId, int $newStatus)
     {
-
-        if ($newStatus == 0) {
-            $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 1 WHERE id = :id");
-        } else {
-            $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = 0 WHERE id = :id");
-        }
-
+        $newIsValid = ($newStatus == 0) ? 1 : 0;
+    
+        $stmt = $this->db->getPDO()->prepare("UPDATE comments SET is_valid = :isValid WHERE id = :id");
         $stmt->bindParam(':id', $commentId, PDO::PARAM_INT);
+        $stmt->bindParam(':isValid', $newIsValid, PDO::PARAM_INT);
+    
         return $stmt->execute();
     }
 
