@@ -55,13 +55,13 @@
                                             <form action="/p5-ocr/admin/comment/status/<?= $comment->id ?>" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="<?= $comment->id ?>">
                                                 <?php if ($comment->is_valid): ?>
-                                                    <button type="submit" class="btn btn-outline-light" title="Désactiver l'article" style="--bs-btn-color: green;">
+                                                    <button type="submit" class="btn btn-outline-light" title="Désactiver le commentaire" style="--bs-btn-color: green;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-toggle-on" viewBox="0 0 16 16">
                                                             <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
                                                         </svg>
                                                     </button>
                                                 <?php else : ?>
-                                                    <button type="submit" class="btn btn-outline-light" title="Activer l'article" style="--bs-btn-color: black;">
+                                                    <button type="submit" class="btn btn-outline-light" title="Activer le commentaire" style="--bs-btn-color: black;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16">
                                                             <path d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/>
                                                         </svg>
