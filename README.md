@@ -21,6 +21,7 @@ Ce qu'il est requis pour commencer avec votre projet :
 Les étapes pour installer votre programme :
 
 - Démarrer votre serveur local.
+- Dans le terminal, tapez: composer install
 - Upload du fichier sql qui est à la racine du projet sur votre interface de géstion de base 
 de donnée fournie avec votre serveur local (phpmyadmin...).
 - Changement des informations de connexion à la base de donnée : /public/index.php -> ligne 10.
