@@ -53,4 +53,4 @@ messagerie, celle-ci demandera l'authentification SMTP ou non)
 
 #### Démarrage
 - Lancer votre serveur local.
-- Espace d'administration : (par defaut) -Email : test@test.com ; -Mot de passe : Ceciestuncomptedetest123
+- Espace d'administration : Se connecter avec le compte ajouté en base de donnée
